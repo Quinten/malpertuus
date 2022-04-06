@@ -1,0 +1,47 @@
+{
+  "resources": [
+    "assets/uimove.mp3"
+  ],
+  "spritemap": {
+    "uimove0": {
+      "start": 0,
+      "end": 0.25,
+      "loop": false
+    },
+    "uimove1": {
+      "start": 1,
+      "end": 1.25,
+      "loop": false
+    },
+    "uimove2": {
+      "start": 2,
+      "end": 2.25,
+      "loop": false
+    },
+    "uimove3": {
+      "start": 3,
+      "end": 3.25,
+      "loop": false
+    },
+    "uimove4": {
+      "start": 4,
+      "end": 4.25,
+      "loop": false
+    },
+    "uimove5": {
+      "start": 5,
+      "end": 5.25,
+      "loop": false
+    },
+    "uimove6": {
+      "start": 6,
+      "end": 6.25,
+      "loop": false
+    },
+    "uimove7": {
+      "start": 7,
+      "end": 7.25,
+      "loop": false
+    }
+  }
+}

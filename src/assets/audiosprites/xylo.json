@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/xylo.mp3"
+  ],
+  "spritemap": {
+    "xylo0": {
+      "start": 0,
+      "end": 1.1,
+      "loop": false
+    }
+  }
+}

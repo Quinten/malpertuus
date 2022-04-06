@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/nosale.mp3"
+  ],
+  "spritemap": {
+    "nosale0": {
+      "start": 0,
+      "end": 0.55,
+      "loop": false
+    }
+  }
+}

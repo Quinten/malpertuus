@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/splat.mp3"
+  ],
+  "spritemap": {
+    "splat0": {
+      "start": 0,
+      "end": 1.95,
+      "loop": false
+    }
+  }
+}

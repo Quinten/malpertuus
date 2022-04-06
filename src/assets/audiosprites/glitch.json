@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/glitch.mp3"
+  ],
+  "spritemap": {
+    "glitch0": {
+      "start": 0,
+      "end": 1.15,
+      "loop": false
+    }
+  }
+}

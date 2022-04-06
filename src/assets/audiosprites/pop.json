@@ -1,0 +1,47 @@
+{
+  "resources": [
+    "assets/pop.mp3"
+  ],
+  "spritemap": {
+    "pop0": {
+      "start": 0,
+      "end": 0.25,
+      "loop": false
+    },
+    "pop1": {
+      "start": 1,
+      "end": 1.25,
+      "loop": false
+    },
+    "pop2": {
+      "start": 2,
+      "end": 2.25,
+      "loop": false
+    },
+    "pop3": {
+      "start": 3,
+      "end": 3.25,
+      "loop": false
+    },
+    "pop4": {
+      "start": 4,
+      "end": 4.25,
+      "loop": false
+    },
+    "pop5": {
+      "start": 5,
+      "end": 5.25,
+      "loop": false
+    },
+    "pop6": {
+      "start": 6,
+      "end": 6.25,
+      "loop": false
+    },
+    "pop7": {
+      "start": 7,
+      "end": 7.25,
+      "loop": false
+    }
+  }
+}

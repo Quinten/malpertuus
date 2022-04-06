@@ -1,0 +1,47 @@
+{
+  "resources": [
+    "assets/coin.mp3"
+  ],
+  "spritemap": {
+    "coin0": {
+      "start": 0,
+      "end": 0.95,
+      "loop": false
+    },
+    "coin1": {
+      "start": 1,
+      "end": 1.95,
+      "loop": false
+    },
+    "coin2": {
+      "start": 2,
+      "end": 2.95,
+      "loop": false
+    },
+    "coin3": {
+      "start": 3,
+      "end": 3.95,
+      "loop": false
+    },
+    "coin4": {
+      "start": 4,
+      "end": 4.95,
+      "loop": false
+    },
+    "coin5": {
+      "start": 5,
+      "end": 5.95,
+      "loop": false
+    },
+    "coin6": {
+      "start": 6,
+      "end": 6.95,
+      "loop": false
+    },
+    "coin7": {
+      "start": 7,
+      "end": 7.95,
+      "loop": false
+    }
+  }
+}

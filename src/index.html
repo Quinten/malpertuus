@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
+        <meta name="author" content="<%= htmlWebpackPlugin.options.author %>">
+        <meta name="monetization" content="$ilp.uphold.com/N3GyWXpENLq4">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            :root {
+                --main-color: <%= htmlWebpackPlugin.options.fgColor %>;
+                --main-bg-color: <%= htmlWebpackPlugin.options.bgColor %>;
+            }
+        </style>
+        <script defer src="gif.js"></script>
+    </head>
+    <body>
+        <div id="loading"></div>
+    </body>
+</html>

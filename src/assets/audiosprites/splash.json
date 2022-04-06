@@ -1,0 +1,27 @@
+{
+  "resources": [
+    "assets/splash.mp3"
+  ],
+  "spritemap": {
+    "splash0": {
+      "start": 0,
+      "end": 1.65,
+      "loop": false
+    },
+    "splash1": {
+      "start": 2,
+      "end": 3.65,
+      "loop": false
+    },
+    "splash2": {
+      "start": 4,
+      "end": 5.65,
+      "loop": false
+    },
+    "splash3": {
+      "start": 6,
+      "end": 7.65,
+      "loop": false
+    }
+  }
+}

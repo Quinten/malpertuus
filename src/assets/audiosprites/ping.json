@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/ping.mp3"
+  ],
+  "spritemap": {
+    "ping0": {
+      "start": 0,
+      "end": 1.95,
+      "loop": false
+    }
+  }
+}

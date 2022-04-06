@@ -1,0 +1,49 @@
+{
+  "name": "malpertuus",
+  "version": "0.0.1",
+  "title": "Malpertuus",
+  "shortName": "Malpertuus",
+  "description": "An underground fortress",
+  "bgColor": "#a6dbbb",
+  "fgColor": "#96702e",
+  "author": "Quinten Clause",
+  "gaId": "UA-116110800-1",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "itch": "butler push public supernapie/malpertuus:HTML"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Quinten/malpertuus.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Quinten/malpertuus/issues"
+  },
+  "homepage": "https://github.com/Quinten/malpertuus#readme",
+  "main": "src/index.js",
+  "devDependencies": {
+    "copy-webpack-plugin": "^8.1.1",
+    "css-loader": "^5.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.0",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "dependencies": {
+    "dust-phaser-plugin": "^0.0.3",
+    "generate-maze": "^1.0.2",
+    "localforage": "^1.9.0",
+    "phaser": "^3.55.2",
+    "seedrandom": "^3.0.5"
+  }
+}

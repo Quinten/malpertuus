@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/click.mp3"
+  ],
+  "spritemap": {
+    "click0": {
+      "start": 0,
+      "end": 1.95,
+      "loop": false
+    }
+  }
+}

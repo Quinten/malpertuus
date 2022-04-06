@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/homeblock.mp3"
+  ],
+  "spritemap": {
+    "homeblock0": {
+      "start": 0,
+      "end": 4.5,
+      "loop": false
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/chop.mp3"
+  ],
+  "spritemap": {
+    "chop0": {
+      "start": 0,
+      "end": 1,
+      "loop": false
+    }
+  }
+}
