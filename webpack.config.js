@@ -5,7 +5,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = require('./package');
 
@@ -32,42 +31,28 @@ module.exports = (env, argv) => {
                     use: 'raw-loader'
                 },
                 {
-                    test: /\.css$/,
-                    use: [
-                        'style-loader',
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true
-                            }
-                        }
-                    ],
-                    include: /_.+\.css$/
-                },
-                {
-                    test: /\.css$/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        'css-loader'
-                    ],
-                    exclude: /_.+\.css$/
-                },
-                {
                     test: /\.(png|svg|jpg|jpeg|gif|mp3)$/i,
                     type: 'asset/resource',
                 }
             ]
         },
         plugins: [
-            new MiniCssExtractPlugin({
-                filename: 'styles.css'
-            }),
             new HtmlWebpackPlugin({
                 ...config,
                 chunks : ['index'],
                 template: './src/index.html',
-                filename: 'index.html'
+                filename: 'index.html',
+                minify: {
+                    collapseWhitespace: true,
+                    keepClosingSlash: true,
+                    removeComments: true,
+                    removeRedundantAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    useShortDoctype: true,
+                    minifyCSS: true,
+                    minifyJS: true
+                }
             }),
             new CopyPlugin({
                 patterns: [

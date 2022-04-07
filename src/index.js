@@ -1,5 +1,3 @@
-import './styles.css';
-
 import config from '../package';
 
 import 'phaser';
