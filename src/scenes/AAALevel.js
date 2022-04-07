@@ -2,6 +2,12 @@ import Screen from './Screen';
 import Player from '../sprites/Player.js';
 import FlashMessage from '../sprites/FlashMessage.js';
 
+import world from '../world';
+world.maps.forEach((map) => {
+    let key = map.fileName.replace('../scratch/', '').replace('.tmx', '');
+    map.key = key;
+});
+
 class Level extends Screen {
 
     constructor (config)
@@ -29,6 +35,7 @@ class Level extends Screen {
         this.pauseOverlayAlpha = 0.65;
 
         this.dustColor = 0xeef0f2;
+        this.mapKey = 'map';
     }
 
     create()
@@ -37,8 +44,16 @@ class Level extends Screen {
 
         super.create();
 
-        this.mapKey = 'map';
+        //this.mapKey = 'map';
         //this.idleKey = 'debug';
+
+        world.maps.forEach((map) => {
+            let key = map.fileName.replace('../scratch/', '').replace('.tmx', '');
+            if (key == this.mapKey) {
+                this.mapWorldX = map.x;
+                this.mapWorldY = map.y;
+            }
+        });
 
         this.map = this.make.tilemap({ key: this.mapKey });
 
@@ -219,12 +234,12 @@ class Level extends Screen {
             || leader.x < 0
             && leader.alive
         ) {
-            if (this.mapKey === 'map') {
-                this.gameOver();
-            } else {
-                //this.gotoNextMap(leader);
+            //if (this.mapKey === 'map') {
+            //    this.gameOver();
+            //} else {
+                this.gotoNextMap(leader);
                 return;
-            }
+            //}
         }
 
         // update player
@@ -369,7 +384,6 @@ class Level extends Screen {
         }
     }
 
-    /*
     gotoNextMap(leader)
     {
         if (this.nextStart) {
@@ -386,6 +400,7 @@ class Level extends Screen {
         if (leader.y < 0) {
             py = -2;
         }
+        /*
         let playerWorldX = this.puzzleMap.x * 256 + Math.round(leader.x + px);
         let playerWorldY = this.puzzleMap.y * 256 + Math.round(leader.y + py);
         let res = this.slot.puzzle.some((map) => {
@@ -417,11 +432,40 @@ class Level extends Screen {
             }
             return false;
         });
+        */
+        let foundMap = false;
+        world.maps.forEach((map) => {
+            if (!foundMap
+                && (this.mapWorldX + leader.x + px) > map.x
+                && (this.mapWorldX + leader.x + px) < map.x + map.width
+                && (this.mapWorldY + leader.y + py) > map.y
+                && (this.mapWorldY + leader.y + py) < map.y + map.height
+            ) {
+                console.log(map.key);
+                this.mapKey = map.key;
+                this.startPoint = {
+                    x: leader.x + this.mapWorldX - map.x,
+                    y: leader.y + this.mapWorldY - map.y,
+                    facing: leader.facing
+                };
+                if (leader.x < 0) {
+                    this.startPoint.x = this.startPoint.x - 16;
+                }
+                if (leader.x > this.map.widthInPixels) {
+                    this.startPoint.x = this.startPoint.x + 16;
+                }
+                if (leader.y < 0) {
+                    this.startPoint.y = this.startPoint.y - 64;
+                }
+                if (leader.y > this.map.heightInPixels) {
+                    this.startPoint.y = this.startPoint.y + 16;
+                }
+            }
+        });
         this.fadeTime = 0;
         this.startNextWait = 0;
         this.scene.restart();
     }
-    */
 
     onGameResume()
     {

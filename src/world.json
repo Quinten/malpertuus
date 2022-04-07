@@ -1,0 +1,20 @@
+{
+    "maps": [
+        {
+            "fileName": "../scratch/map.tmx",
+            "height": 1024,
+            "width": 1024,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "../scratch/west.tmx",
+            "height": 1024,
+            "width": 1024,
+            "x": -1024,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}
