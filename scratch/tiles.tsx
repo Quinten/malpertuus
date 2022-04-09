@@ -11,4 +11,9 @@
    <property name="climbable" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="4">
+  <properties>
+   <property name="swimable" type="bool" value="true"/>
+  </properties>
+ </tile>
 </tileset>
