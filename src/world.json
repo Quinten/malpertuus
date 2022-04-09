@@ -13,6 +13,13 @@
             "width": 1024,
             "x": -1024,
             "y": 0
+        },
+        {
+            "fileName": "../scratch/north.tmx",
+            "height": 1024,
+            "width": 1024,
+            "x": 0,
+            "y": -1024
         }
     ],
     "onlyShowAdjacentMaps": false,

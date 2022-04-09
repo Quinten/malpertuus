@@ -441,11 +441,10 @@ class Level extends Screen {
                 && (this.mapWorldY + leader.y + py) > map.y
                 && (this.mapWorldY + leader.y + py) < map.y + map.height
             ) {
-                console.log(map.key);
                 this.mapKey = map.key;
                 this.startPoint = {
-                    x: leader.x + this.mapWorldX - map.x,
-                    y: leader.y + this.mapWorldY - map.y,
+                    x: leader.x - (map.x - this.mapWorldX),
+                    y: leader.y - (map.y - this.mapWorldY),
                     facing: leader.facing
                 };
                 if (leader.x < 0) {
@@ -460,8 +459,83 @@ class Level extends Screen {
                 if (leader.y > this.map.heightInPixels) {
                     this.startPoint.y = this.startPoint.y + 16;
                 }
+                foundMap = true;
             }
         });
+        if (!foundMap) {
+            if (leader.x < 0) {
+                world.maps.sort((a, b) => b.x - a.x);
+                world.maps.forEach((map) => {
+                    if (!foundMap
+                        && (this.mapWorldY + leader.y + py) > map.y
+                        && (this.mapWorldY + leader.y + py) < map.y + map.height
+                    ) {
+                        this.mapKey = map.key;
+                        this.startPoint = {
+                            x: leader.x + map.width,
+                            y: leader.y - (map.y - this.mapWorldY),
+                            facing: leader.facing
+                        };
+                        foundMap = true;
+                    }
+                });
+                this.startPoint.x = this.startPoint.x - 16;
+            }
+            if (leader.x > this.map.widthInPixels) {
+                world.maps.sort((a, b) => a.x - b.x);
+                world.maps.forEach((map) => {
+                    if (!foundMap
+                        && (this.mapWorldY + leader.y + py) > map.y
+                        && (this.mapWorldY + leader.y + py) < map.y + map.height
+                    ) {
+                        this.mapKey = map.key;
+                        this.startPoint = {
+                            x: leader.x - this.map.widthInPixels,
+                            y: leader.y - (map.y - this.mapWorldY),
+                            facing: leader.facing
+                        };
+                        foundMap = true;
+                    }
+                });
+                this.startPoint.x = this.startPoint.x + 16;
+            }
+            if (leader.y < 0) {
+                world.maps.sort((a, b) => b.y - a.y);
+                world.maps.forEach((map) => {
+                    if (!foundMap
+                        && (this.mapWorldX + leader.x + px) > map.x
+                        && (this.mapWorldX + leader.x + px) < map.x + map.width
+                    ) {
+                        this.mapKey = map.key;
+                        this.startPoint = {
+                            x: leader.x - (map.x - this.mapWorldX),
+                            y: leader.y + map.height,
+                            facing: leader.facing
+                        };
+                        foundMap = true;
+                    }
+                });
+                this.startPoint.y = this.startPoint.y - 64;
+            }
+            if (leader.y > this.map.heightInPixels) {
+                world.maps.sort((a, b) => a.y - b.y);
+                world.maps.forEach((map) => {
+                    if (!foundMap
+                        && (this.mapWorldX + leader.x + px) > map.x
+                        && (this.mapWorldX + leader.x + px) < map.x + map.width
+                    ) {
+                        this.mapKey = map.key;
+                        this.startPoint = {
+                            x: leader.x - (map.x - this.mapWorldX),
+                            y: leader.y - this.map.heightInPixels,
+                            facing: leader.facing
+                        };
+                        foundMap = true;
+                    }
+                });
+                this.startPoint.y = this.startPoint.y + 16;
+            }
+        }
         this.fadeTime = 0;
         this.startNextWait = 0;
         this.scene.restart();

@@ -6,4 +6,9 @@
    <property name="collideAll" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="3">
+  <properties>
+   <property name="climbable" type="bool" value="true"/>
+  </properties>
+ </tile>
 </tileset>

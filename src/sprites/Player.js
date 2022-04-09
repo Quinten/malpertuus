@@ -542,11 +542,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     climb(controls, time, delta)
     {
+        /*
         if (!this.scene.climbLayer
             || this.scene.inventory
                 .indexOf('climbing belt') === -1) {
             return;
         }
+        */
         this.canClimb = false;
 
         let climbTile = this.scene.climbLayer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
