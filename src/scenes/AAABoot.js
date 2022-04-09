@@ -67,12 +67,12 @@ class Boot extends Phaser.Scene {
 
         // hide and show mouse
         let mouseHideTO = 0;
-        this.sys.canvas.style.cursor = 'none';
-        this.sys.canvas.addEventListener('mousemove', () => {
-            this.sys.canvas.style.cursor = 'default';
+        document.body.style.cursor = 'none';
+        window.addEventListener('mousemove', () => {
+            document.body.style.cursor = 'default';
             clearTimeout(mouseHideTO);
             mouseHideTO = setTimeout(() => {
-                this.sys.canvas.style.cursor = 'none';
+                document.body.style.cursor = 'none';
             }, 1000);
         });
     }
