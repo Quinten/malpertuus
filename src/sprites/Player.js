@@ -150,6 +150,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.parachute = new Parachute(this.scene, 0, 0);
         this.parachute.visible = this.status.parachuting;
         let controls = (this.playerKey === '') ? this.scene.controls : this.scene.bcontrols;
+        /*
         controls.events.on('xup', () => {
             if (this.scene.inventory.indexOf('parachute') > -1
                 && !this.body.onFloor()
@@ -166,6 +167,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.status.parachuting = false;
             }
         });
+        */
 
         this.scene.inners.push(this);
 
@@ -199,6 +201,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             lineStyle: { width: 2, color: (this.playerKey === '') ? 0x736372 : 0x6a7363, alpha: 1 }
         });
 
+        /*
         controls.events.on('bdown', () => {
             if (this.scene.inventory.indexOf('rope gun') === -1 || this.isGripping || this.gripTimer < 500 || !this.scene || this.scene.mapKey === 'mount-hop') {
                 return;
@@ -240,6 +243,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.isGripping = false;
             this.rope.clear();
         });
+        */
 
     }
 
@@ -353,12 +357,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(this.ani + ((this.status.isTikkie) ? 'a' : '') + this.playerKey, true);
 
         // crash onto the floor
+        /*
         if (this.body.onFloor()
             && this.prevVelocityY > this.jumpPower * 2
             && this.alive) {
             this.kill();
             this.checkIfGameOver();
         }
+        */
         this.prevVelocityY = this.body.velocity.y;
 
         if (this.scene.isSplitForTwoPlayer && !this.status.ghost) {
@@ -452,6 +458,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.groundParticlesEmitter.explode(20, this.body.x + 4, this.body.bottom);
                 this.bubblesEmitter.flow(150, 1);
                 music.startMuffle();
+                /*
                 if (
                     this.scene.inventory.indexOf('flippers') === -1
                 ) {
@@ -461,8 +468,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.scene.inventory.indexOf('flippers') > -1
                     && this.scene.inventory.indexOf('scuba tank') > -1
                 ) {
+                */
                     this.status.isScubaDiving = true;
+                /*
                 }
+                */
                 this.movementParticlesEmitter.stop();
             }
             this.staminaBarOuter.visible = true;
@@ -646,8 +656,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (controls.aDown
             && (onFloor || (
                 this.body.onWall()
+                /*
                 && this.scene.inventory
                     .indexOf('wall jump socks') > -1
+                */
             )) && (time > this.jumpTimer))
         {
             this.body.setVelocityY(-this.jumpPower);
@@ -718,29 +730,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             }
 
-            if (this.scene.inventory
-                    .indexOf('double jump suspenders') > -1) {
+            //if (this.scene.inventory
+            //        .indexOf('double jump suspenders') > -1) {
                 this.prepDoubleJump = true;
-            }
+            //}
 
         } else {
 
             if (this.body.blocked.left) {
                 this.ani = 'slide-left';
-                if (
-                    this.scene.inventory.indexOf('slide grip gloves') > -1
-                ) {
+                //if (
+                //    this.scene.inventory.indexOf('slide grip gloves') > -1
+                //) {
                     this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
                     this.movementParticlesEmitter.flow(900, 1);
-                }
+                //}
             } else if (this.body.blocked.right) {
                 this.ani = 'slide-right';
-                if (
-                    this.scene.inventory.indexOf('slide grip gloves') > -1
-                ) {
+                //if (
+                //    this.scene.inventory.indexOf('slide grip gloves') > -1
+                //) {
                     this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
                     this.movementParticlesEmitter.flow(150, 1);
-                }
+                //}
 
             } else {
 
