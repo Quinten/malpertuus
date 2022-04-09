@@ -36,6 +36,8 @@ class Level extends Screen {
 
         this.dustColor = 0xeef0f2;
         this.mapKey = 'map';
+
+        this.camLerp = 1;
     }
 
     create()
@@ -95,7 +97,7 @@ class Level extends Screen {
 
         // the player
         this.player = new Player(this, this.startPoint.x, this.startPoint.y, 'player', 0, this.startPoint.facing);
-        this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
+        this.cameras.main.startFollow(this.player, true, this.camLerp, this.camLerp);
         this.physics.add.collider(this.player, this.layer);
 
         /*
@@ -192,7 +194,7 @@ class Level extends Screen {
         this.otherOverlapTimer = 0;
         this.physics.add.overlap(this.other, this.player, this.otherPlayerOverlap, undefined, this);
         this.physics.add.collider(this.other, this.layer);
-        this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, 0.5, 0.5);
+        this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, this.camLerp, this.camLerp);
         this.player.setCollideWorldBounds(!this.player.status.isTikkie);
         this.other.setCollideWorldBounds(this.player.status.isTikkie);
     }
@@ -205,7 +207,7 @@ class Level extends Screen {
             this.cameras.main.shake(250, 0.03);
             this.sfx.play('click');
             this.otherOverlapTimer = 0;
-            this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, 0.5, 0.5);
+            this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, this.camLerp, this.camLerp);
             this.player.setCollideWorldBounds(!this.player.status.isTikkie);
             this.other.setCollideWorldBounds(this.player.status.isTikkie);
         }

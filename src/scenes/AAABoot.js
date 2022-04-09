@@ -87,10 +87,10 @@ class Boot extends Phaser.Scene {
             let zoom = Math.max(wZoom, hZoom);
             let w = Math.ceil(window.innerWidth / zoom);
             let h = Math.ceil(window.innerHeight / zoom);
-                if (w % 1) {
+            if (w % 2) {
                 w += 1;
             }
-            if (h % 1) {
+            if (h % 2) {
                 h += 1;
             }
             this.scale.setZoom(zoom);
