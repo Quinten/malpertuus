@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "dust-phaser-plugin": "^0.0.3",
-    "generate-maze": "^1.0.2",
     "localforage": "^1.9.0",
     "phaser": "^3.55.2",
     "seedrandom": "^3.0.5"
