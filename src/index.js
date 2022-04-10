@@ -6,7 +6,6 @@ import DustPhaserPlugin from 'dust-phaser-plugin';
 
 import Sfx from './plugins/Sfx.js';
 import Ambient from './plugins/Ambient.js';
-import LevelStats from './plugins/LevelStats.js';
 import SimplePlatformerControls from './plugins/SimplePlatformerControls.js';
 import SecondaryPlatformerControls from './plugins/SecondaryPlatformerControls.js';
 import State from './plugins/State.js';
@@ -71,8 +70,7 @@ let gameConfig = {
         global: [
             { key: 'state', plugin: State, mapping: 'state', start: true },
             { key: 'sfx', plugin: Sfx, mapping: 'sfx', start: true },
-            { key: 'ambient', plugin: Ambient, mapping: 'ambient', start: true },
-            { key: 'levelstats', plugin: LevelStats, mapping: 'levelstats', start: true }
+            { key: 'ambient', plugin: Ambient, mapping: 'ambient', start: true }
         ]
     },
     input: {
