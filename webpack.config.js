@@ -69,6 +69,12 @@ module.exports = (env, argv) => {
                         to: 'gif.worker.js'
                     }
                 ]
+            }),
+            new webpack.DefinePlugin({
+                __u: JSON.stringify({
+                    r: btoa(config.homepage),
+                    d: config.domains.map(d => btoa(d))
+                })
             })
         ],
 

@@ -26,7 +26,15 @@
   "bugs": {
     "url": "https://github.com/Quinten/malpertuus/issues"
   },
-  "homepage": "https://github.com/Quinten/malpertuus#readme",
+  "homepage": "https://supernapie.com/games/malpertuus",
+  "domains": [
+    "v6p9d9t4.ssl.hwcdn.net",
+    "0.0.0.0",
+    "localhost",
+    "malpertuus.supernapie.com",
+    "quinten.github.io",
+    "supernapie.itch.io"
+  ],
   "main": "src/index.js",
   "devDependencies": {
     "copy-webpack-plugin": "^8.1.1",

@@ -1,17 +1,19 @@
 import icon from '../assets/game-icon.png';
 
+// press 1, 2 or 3 for gif
+
 let optionMap = {
-    '55': {
+    '49': {
         icon: true,
         width: 315,
         height: 250
     },
-    '57': {
+    '50': {
         icon: false,
         width: 420,
         height: 210
     },
-    '48': {
+    '51': {
         icon: false,
         width: 512,
         height: 512

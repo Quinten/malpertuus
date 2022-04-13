@@ -80,18 +80,6 @@ let gameConfig = {
     scene: scenes
 };
 
-/*
-// start game
-let hostsString = `["0.0.0.0:3000","${config.name}.netlify.app","${config.name}.supernapie.com","quinten.github.io","${config.name}-kong.netlify.app","v6p9d9t4.ssl.hwcdn.net"]`;
-console.log(btoa(hostsString));
-let hosts = JSON.parse(hostsString);
-//let hosts = JSON.parse(atob('WyIwLjAuMC4wOjMwMDAiLCJwaGFzZXItdGVtcGxhdGUubmV0bGlmeS5hcHAiLCJwaGFzZXItdGVtcGxhdGUuc3VwZXJuYXBpZS5jb20iLCJxdWludGVuLmdpdGh1Yi5pbyIsInBoYXNlci10ZW1wbGF0ZS1rb25nLm5ldGxpZnkuYXBwIiwidjZwOWQ5dDQuc3NsLmh3Y2RuLm5ldCJd'));
-//console.log(hosts);
-if (hosts.indexOf(window.location.host) > -1) {
-    window.game = new Phaser.Game(gameConfig);
-}
-*/
-
 // https://blog.stevenlevithan.com/archives/parseuri-split-url
 function parseUri(sourceUri){
     var uriPartNames = ["source","protocol","authority","domain","port","path","directoryPath","fileName","query","anchor"],
@@ -103,24 +91,24 @@ function parseUri(sourceUri){
     if(uri.directoryPath.length > 0){
         uri.directoryPath = uri.directoryPath.replace(/\/?$/, "/");
     }
-
     return uri;
 }
-
-/*
-if (JSON.parse(atob(
-"WyIiLCJodHRwOi8vMC4wLjAuMDozMDAwLyIsImh0dHBzOi8vdjZwOWQ5dDQuc3NsLmh3Y2RuLm5ldC8iXQ=="
-)).indexOf(document.referrer) > -1 || parseUri(document.referrer).domain === atob('djZwOWQ5dDQuc3NsLmh3Y2RuLm5ldA==')) {
+// check if the domain is ok and start game
+var addressToCheck = '';
+try {
+    // we are not in an iframe
+    addressToCheck = window.top.location.href;
+} catch(e) {
+    // we are in an iframe
+    addressToCheck = document.referrer;
+}
+if (__u.d.indexOf(btoa(parseUri(addressToCheck).domain)) > -1) {
     window.game = new Phaser.Game(gameConfig);
-    //gifrecorder.init();
+    gifrecorder.init();
 } else {
-    window.addEventListener('click', function () {
-        window.top.location = atob('aHR0cHM6Ly9zdXBlcm5hcGllLml0Y2guaW8vaG9wd29ybGQ=');
-    });
-    window.addEventListener('keyup', function () {
-        window.top.location = atob('aHR0cHM6Ly9zdXBlcm5hcGllLml0Y2guaW8vaG9wd29ybGQ=');
+    ['click', 'keyup'].forEach(ev => {
+        window.addEventListener(ev, e => {
+            window.top.location = atob(__u.r);
+        });
     });
 }
-*/
-
-window.game = new Phaser.Game(gameConfig);
