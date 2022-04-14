@@ -13,11 +13,6 @@
     "build": "webpack --mode production",
     "itch": "butler push public supernapie/malpertuus:HTML"
   },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Quinten/malpertuus.git"
