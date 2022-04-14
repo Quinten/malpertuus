@@ -17,10 +17,6 @@ class Level extends Screen {
                 tileBias: 12,
                 gravity: { y: 512 },
                 debug: false
-            },
-            matter: {
-                debug: false,
-                gravity: { y: 0.5 }
             }
         }});
 
@@ -69,7 +65,6 @@ class Level extends Screen {
         this.layer = this.map.createLayer(0, this.tiles, 0, 0);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.matter.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
         // only up collisions
         this.map.setCollisionByProperty({collideUp: true});

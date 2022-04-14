@@ -55,10 +55,6 @@ let gameConfig = {
             tileBias: 12,
             gravity: { y: 512 },
             debug: false
-        },
-        matter: {
-            debug: false,
-            gravity: { y: 0.5 }
         }
     },
     plugins: {

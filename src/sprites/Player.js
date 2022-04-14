@@ -156,7 +156,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 && !this.body.onFloor()
                 && !this.status.isSwimming
                 && !this.isClimbing
-                && !this.isGripping
                 && !this.status.parachuting
             ) {
                 this.parachute.visible = true;
@@ -186,64 +185,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //console.log(this);
-
-        this.gripHook = this.scene.matter.add.sprite(x, y, 'particles', null, { isStatic: true });
-        this.gripHook.visible = false;
-
-        this.gripHandle = this.scene.matter.add.sprite(x, y, 'particles', null, { isStatic: false });
-        this.gripHandle.visible = false;
-
-        this.gripConstraint = this.scene.matter.add.constraint(this.gripHook, this.gripHandle, 100, 0.2);
-
-        this.isGripping = false;
-        this.gripTimer = 500;
-        this.rope = this.scene.add.graphics({
-            lineStyle: { width: 2, color: (this.playerKey === '') ? 0x736372 : 0x6a7363, alpha: 1 }
-        });
-
-        /*
-        controls.events.on('bdown', () => {
-            if (this.scene.inventory.indexOf('rope gun') === -1 || this.isGripping || this.gripTimer < 500 || !this.scene || this.scene.mapKey === 'mount-hop') {
-                return;
-            }
-            this.isGripping = true;
-            this.gripTimer = 0;
-            let pX = this.x;
-            let pY = this.y;
-            let dX = 0;
-            if (controls.left) {
-                dX = -1;
-            } else if (controls.right) {
-                dX = 1;
-            }
-            let dY = -1;
-            let hit = false;
-            while (!hit
-                && pX > 0 && pX < this.scene.map.widthInPixels
-                && pY > -64 && pY < this.scene.map.heightInPixels
-            ) {
-                pX = pX + dX;
-                pY = pY + dY;
-                let tile = this.scene.layer.getTileAtWorldXY(pX, pY);
-                if (tile !== null && tile.properties.collideAll || pY < -60) {
-                    hit = true;
-                }
-            }
-            if (hit) {
-                let d = Math.hypot(pX - this.x, pY - this.y);
-                this.gripConstraint.length = d;
-                this.gripHook.setPosition(pX, pY);
-                this.gripHandle.setPosition(this.x, this.y);
-                this.scene.sfx.play('thud', 4);
-                this.movementParticlesEmitter.stop();
-            }
-        });
-
-        controls.events.on('bup', () => {
-            this.isGripping = false;
-            this.rope.clear();
-        });
-        */
 
     }
 
@@ -328,30 +269,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        if (!this.isGripping) {
-            this.swim(controls, time, delta);
-            if (!this.canSwim) {
-                this.climb(controls, time, delta);
-                if (!this.isClimbing) {
-                    this.runAndJump(controls, time, delta);
-                }
-            }
-        } else {
-            if (this.gripConstraint.length < 8 || this.body.onWall()) {
-                this.isGripping = false;
-                this.gripTimer = 0;
-                this.rope.clear();
-            } else {
-                this.gripConstraint.length = this.gripConstraint.length - 1;
-                this.body.position.lerp(this.gripHandle.body.position, 1);
-                this.body.velocity.lerp(this.gripHandle.body.velocity, 1);
-                this.facing = (this.body.velocity.x <= 0) ? 'left' : 'right';
-                this.ani = 'ropeswing-';
-                this.ani = this.ani + this.facing;
-                this.rope.clear().lineBetween(this.gripHook.x, this.gripHook.y, this.x, this.y)
+        this.swim(controls, time, delta);
+        if (!this.canSwim) {
+            this.climb(controls, time, delta);
+            if (!this.isClimbing) {
+                this.runAndJump(controls, time, delta);
             }
         }
-        this.gripTimer = this.gripTimer + delta;
 
         // don't forget to animate :)
         this.anims.play(this.ani + ((this.status.isTikkie) ? 'a' : '') + this.playerKey, true);
@@ -739,21 +663,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (this.body.blocked.left) {
                 this.ani = 'slide-left';
-                //if (
-                //    this.scene.inventory.indexOf('slide grip gloves') > -1
-                //) {
-                    this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
-                    this.movementParticlesEmitter.flow(900, 1);
-                //}
+                this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
+                this.movementParticlesEmitter.flow(900, 1);
             } else if (this.body.blocked.right) {
                 this.ani = 'slide-right';
-                //if (
-                //    this.scene.inventory.indexOf('slide grip gloves') > -1
-                //) {
-                    this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
-                    this.movementParticlesEmitter.flow(150, 1);
-                //}
-
+                this.setVelocityY(Math.min(this.body.velocity.y, this.jumpPower));
+                this.movementParticlesEmitter.flow(150, 1);
             } else {
 
                 if (this.justWallJumped) {
