@@ -27,10 +27,6 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: [ /\.vert$/, /\.frag$/ ],
-                    use: 'raw-loader'
-                },
-                {
                     test: /\.(png|svg|jpg|jpeg|gif|mp3)$/i,
                     type: 'asset/resource',
                 }
