@@ -49,23 +49,25 @@ class Level extends Screen {
 
         this.tiles = [];
         this.map.tilesets.forEach((tileset) => {
-            this.tiles.push(this.map.addTilesetImage(tileset.name, tileset.name, 8, 8, 0, 0));
+            this.tiles.push(
+                this.map.addTilesetImage(tileset.name, tileset.name, 8, 8, 0, 0)
+            );
         });
 
-        //this.bglayer = this.map.createLayer(0, this.tiles, 0, 0);
-        //this.layer = this.map.createLayer(1, this.tiles, 0, 0);
-        this.layer = this.map.createLayer(0, this.tiles, 0, 0);
+        this.layers = [];
+        this.map.layers.forEach((origLayer, index) => {
+            let layer = this.map.createLayer(index, this.tiles, 0, 0);
+            layer.setDepth(index > 1 ? 4 : 0); // player is at 3
+            this.layers.push(layer);
+            // only up collisions
+            this.map.setCollisionByProperty({collideUp: true}, true, true, index);
+            this.map.forEachTile(this.setCollisionOnlyUp, this, 0, 0, this.map.width, this.map.height, undefined, index);
+            // collide all
+            this.map.setCollisionByProperty({collideAll: true}, true, true, index);
+        });
+
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-
-        // only up collisions
-        this.map.setCollisionByProperty({collideUp: true});
-        this.map.forEachTile(this.setCollisionOnlyUp, this, 0, 0, this.map.width, this.map.height);
-
-        // collide all
-        this.map.setCollisionByProperty({collideAll: true});
-
-        this.climbLayer = this.layer;
 
         if (!this.startPoint) {
             this.startPoint = {
@@ -84,7 +86,11 @@ class Level extends Screen {
         // the player
         this.player = new Player(this, this.startPoint.x, this.startPoint.y, 'player', 0, this.startPoint.facing);
         this.cameras.main.startFollow(this.player, true, this.camLerp, this.camLerp);
-        this.physics.add.collider(this.player, this.layer);
+
+
+        this.layers.forEach(layer => {
+            this.physics.add.collider(this.player, layer);
+        });
 
         this.controls.events.once('escup', () => {
             this.nextScene = 'menu';
@@ -162,7 +168,9 @@ class Level extends Screen {
         this.other = new Player(this, this.player.x, this.player.y - 16, 'player', 0, 'left', 'b');
         this.otherOverlapTimer = 0;
         this.physics.add.overlap(this.other, this.player, this.otherPlayerOverlap, undefined, this);
-        this.physics.add.collider(this.other, this.layer);
+        this.layers.forEach(layer => {
+            this.physics.add.collider(this.other, layer);
+        });
         this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, this.camLerp, this.camLerp);
         this.player.setCollideWorldBounds(!this.player.status.isTikkie);
         this.other.setCollideWorldBounds(this.player.status.isTikkie);
@@ -225,14 +233,16 @@ class Level extends Screen {
             && !this.player.isClimbing
             && !this.player.status.isSwimming
         ) {
-            let colTile = this.layer.getTileAtWorldXY(this.player.body.x + 4, this.player.body.y + 18);
-            if (colTile !== null && (colTile.properties.collideUp || colTile.properties.collideAll)) {
-                this.startPoint = {
-                    x: this.player.x,
-                    y: this.player.y,
-                    facing: this.player.facing
+            this.layers.forEach(layer => {
+                let colTile = layer.getTileAtWorldXY(this.player.body.x + 4, this.player.body.y + 18);
+                if (colTile !== null && (colTile.properties.collideUp || colTile.properties.collideAll)) {
+                    this.startPoint = {
+                        x: this.player.x,
+                        y: this.player.y,
+                        facing: this.player.facing
+                    }
                 }
-            }
+            });
         }
     }
 

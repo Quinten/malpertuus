@@ -86,11 +86,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 type: 'onLeave',
                 source: {
                     contains: (x, y) => {
-                        let tile = this.scene.layer.getTileAtWorldXY(x, y);
-                        if (tile && tile.properties.swimable) {
-                            return true;
-                        }
-                        return false;
+                        let wet = false;
+                        this.scene.layers.forEach(layer => {
+                            let tile = layer.getTileAtWorldXY(x, y);
+                            if (tile && tile.properties.swimable) {
+                                wet = true;
+                            }
+                        });
+                        return wet;
                     }
                 }
             }
@@ -174,7 +177,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.movementParticlesEmitter.setPosition(this.x + Math.floor(Math.random() * 9), this.y + 13);
         }
 
-        if (!this.alive || !this.scene || !this.scene.layer) {
+        if (!this.alive || !this.scene || !this.scene.layers.length) {
             if (this.body) {
                 this.body.velocity.x = 0;
             }
@@ -273,12 +276,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     {
         this.canSwim = false;
 
-        let swimTiles = this.scene.layer.getTilesWithinWorldXY(this.body.x + 2, this.body.y, this.body.width - 4, this.body.height - 8);
-        for (let swimTile of swimTiles) {
-            if (swimTile.properties.swimable) {
-                this.canSwim = true;
+        this.scene.layers.forEach(layer => {
+            let swimTiles = layer.getTilesWithinWorldXY(
+                this.body.x + 2,
+                this.body.y,
+                this.body.width - 4,
+                this.body.height - 8
+            );
+            for (let swimTile of swimTiles) {
+                if (swimTile.properties.swimable) {
+                    this.canSwim = true;
+                }
             }
-        }
+        });
         //this.canSwim = true;
 
         if (this.canSwim) {
@@ -308,9 +318,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.body.setVelocityY(this.jumpPower * 2);
             }
             if (this.body.velocity.y < 0) {
-                let checkTile = this.scene.layer.getTileAtWorldXY(this.body.x + 4, this.body.y - 10);
-                if (checkTile === null || !checkTile.properties.swimable) {
-                    //gravityUp = 16;
+                let isSurfacing = true;
+                this.scene.layers.forEach(layer => {
+                    let checkTile = layer.getTileAtWorldXY(this.body.x + 4, this.body.y - 10);
+                    if (checkTile !== null && checkTile.properties.swimable) {
+                        isSurfacing = false;
+                    }
+                });
+                if (isSurfacing) {
                     this.body.setVelocityY(-this.jumpPower);
                 }
             }
@@ -347,10 +362,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     {
         this.canClimb = false;
 
-        let climbTile = this.scene.climbLayer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
-        if (climbTile !== null && climbTile.properties.climbable) {
-            this.canClimb = true;
-        }
+        this.scene.layers.forEach(layer => {
+            let climbTile = layer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
+            if (climbTile !== null && climbTile.properties.climbable) {
+                this.canClimb = true;
+            }
+        });
 
         if (this.isClimbing && (!this.canClimb || this.body.blocked.down)) {
             this.isClimbing = false;
@@ -372,18 +389,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.ani = 'climb';
 
             if (controls.up) {
-                let upTile = this.scene.climbLayer.getTileAtWorldXY(this.body.x + 4, this.body.y + 4);
-                if (upTile !== null && upTile.properties.climbable) {
+                let tileClimbable = false;
+                this.scene.layers.forEach(layer => {
+                    let upTile = layer.getTileAtWorldXY(this.body.x + 4, this.body.y + 4);
+                    if (upTile !== null && upTile.properties.climbable) {
+                        tileClimbable = true;
+                    }
+                });
+                if (tileClimbable) {
                     this.body.setVelocityY(-this.climbSpeed);
                 } else {
                     this.body.setVelocityY(0);
-                    let colTile = this.scene.layer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
-                    if (colTile !== null && colTile.properties.collideUp) {
-                        this.body.setVelocityY(-this.jumpPower);
-                        this.jumpTimer = time + 250;
-                        this.isClimbing = false;
-                        this.body.allowGravity = true;
-                    }
+                    this.scene.layers.forEach(layer => {
+                        let colTile = layer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
+                        if (colTile !== null && colTile.properties.collideUp) {
+                            this.body.setVelocityY(-this.jumpPower);
+                            this.jumpTimer = time + 250;
+                            this.isClimbing = false;
+                            this.body.allowGravity = true;
+                        }
+                    });
                 }
             } else if (controls.down) {
                 this.body.setVelocityY(this.climbSpeed);
@@ -468,19 +493,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if (onFloor) {
 
-            let colTile = this.scene.layer.getTileAtWorldXY(this.body.x, this.body.y + 18);
-            if ((colTile === null || (colTile !== null && !colTile.properties.collideAll))) {
-                if (!controls.down) {
-                    this.prepDrop = true;
+            let tileGoDown = false;
+            this.scene.layers.forEach(layer => {
+                let colTile = layer.getTileAtWorldXY(
+                    this.body.x,
+                    this.body.y + 18
+                );
+                if (colTile !== null && colTile.properties.collideUp
+                ) {
+                    tileGoDown = true;
                 }
-                if (controls.down && this.prepDrop && this.jumpTimer < time) {
-                    this.body.checkCollision.down = false;
-                    this.jumpTimer = time + 250;
+                colTile = layer.getTileAtWorldXY(
+                    this.body.x + 8,
+                    this.body.y + 18
+                );
+                if (colTile !== null && colTile.properties.collideUp
+                    && controls.down && this.canDrop && this.jumpTimer < time
+                ) {
+                    tileGoDown = true;
                 }
-                this.canDrop = true;
-            }
-            colTile = this.scene.layer.getTileAtWorldXY(this.body.x + 8, this.body.y + 18);
-            if ((colTile === null || (colTile !== null && !colTile.properties.collideAll)) && controls.down && this.canDrop && this.jumpTimer < time) {
+            });
+            if (tileGoDown) {
                 if (!controls.down) {
                     this.prepDrop = true;
                 }
