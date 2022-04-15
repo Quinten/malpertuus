@@ -216,6 +216,24 @@ class Level extends Screen {
             this.other.update(this.bcontrols, time, delta);
             this.otherOverlapTimer = this.otherOverlapTimer + delta;
         }
+
+        // save position when idle
+        if (this.player.body.onFloor()
+            && this.player.alive
+            && !this.controls.left
+            && !this.controls.right
+            && !this.player.isClimbing
+            && !this.player.status.isSwimming
+        ) {
+            let colTile = this.layer.getTileAtWorldXY(this.player.body.x + 4, this.player.body.y + 18);
+            if (colTile !== null && (colTile.properties.collideUp || colTile.properties.collideAll)) {
+                this.startPoint = {
+                    x: this.player.x,
+                    y: this.player.y,
+                    facing: this.player.facing
+                }
+            }
+        }
     }
 
     setCollisionOnlyUp(tile)
