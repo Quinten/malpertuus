@@ -2,8 +2,6 @@ import config from '../package';
 
 import 'phaser';
 
-import DustPhaserPlugin from 'dust-phaser-plugin';
-
 import Sfx from './plugins/Sfx.js';
 import Ambient from './plugins/Ambient.js';
 import SimplePlatformerControls from './plugins/SimplePlatformerControls.js';
@@ -59,7 +57,6 @@ let gameConfig = {
     },
     plugins: {
         scene: [
-            { key: 'DustPlugin', plugin: DustPhaserPlugin, mapping: 'dust' },
             { key: 'simplePlatformerControls', plugin: SimplePlatformerControls, mapping: 'controls' },
             { key: 'secondaryPlatformerControls', plugin: SecondaryPlatformerControls, mapping: 'bcontrols' }
         ],

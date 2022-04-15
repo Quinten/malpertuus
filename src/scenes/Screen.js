@@ -25,8 +25,6 @@ class Screen extends Phaser.Scene {
         this.startNextWait = 0;
 
         this.pauseOverlayAlpha = 1;
-
-        this.dustColor = 0x736372;
     }
 
     create ()
@@ -61,9 +59,6 @@ class Screen extends Phaser.Scene {
             this.controls.events.once('escup', this.tapUp, this);
         }
         this.cameras.main.flash(this.fadeTime, fadeColor.r, fadeColor.g, fadeColor.b);
-        if (!this.isLevel) {
-            this.dust.addOnePixelDust({ count: 20, alpha: 1, tint: this.dustColor });
-        }
     }
 
     resizeField(w, h)

@@ -26,7 +26,6 @@ class Level extends Screen {
 
         this.pauseOverlayAlpha = 0.65;
 
-        this.dustColor = 0xeef0f2;
         this.mapKey = 'map';
 
         this.camLerp = 1;
@@ -117,8 +116,6 @@ class Level extends Screen {
         this.time.delayedCall(this.fadeTime, e => {
             this.flashMessage.showText('Press ? for help');
         }, [], this);
-
-        this.dust.addOnePixelDust({ count: 20, alpha: 1, tint: this.dustColor });
 
         this.swimCels = [];
         /*

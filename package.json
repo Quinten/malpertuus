@@ -38,7 +38,6 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
-    "dust-phaser-plugin": "^0.0.3",
     "localforage": "^1.9.0",
     "phaser": "^3.55.2",
     "seedrandom": "^3.0.5"
