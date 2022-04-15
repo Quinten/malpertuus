@@ -224,6 +224,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.runAndJump(controls, time, delta);
             }
         }
+        if (this.jumpTimer < time) {
+            this.body.checkCollision.down = true;
+            this.justWallJumped = false;
+            this.justDoubleJumped = false;
+        }
 
         // don't forget to animate :)
         this.anims.play(this.ani + ((this.status.isTikkie) ? 'a' : '') + this.playerKey, true);
@@ -353,7 +358,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.jumpTimer = time + 250;
         }
 
-        if ((controls.up || (controls.down && !this.canDrop)) && time > this.jumpTimer) {
+        if ((controls.up || (controls.down && !this.body.onFloor())) && time > this.jumpTimer) {
             if (this.canClimb && !this.isClimbing) {
                 this.isClimbing = true;
                 this.body.allowGravity = false;
@@ -535,11 +540,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.prepDoubleJump = false;
                 this.canDoubleJump = true;
             }
-        }
-        if (this.jumpTimer < time) {
-            this.body.checkCollision.down = true;
-            this.justWallJumped = false;
-            this.justDoubleJumped = false;
         }
     }
 }
