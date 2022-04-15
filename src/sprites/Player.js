@@ -14,8 +14,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             status['status' + playerKey] = {
                 isTikkie: playerKey === 'b',
                 isSwimming: false,
-                isScubaDiving: false,
-                swimTimer: 0,
                 ghost: false
             };
         }
@@ -48,7 +46,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.prepDrop = false;
 
         this.canSwim = false;
-        this.swimTimerMax = 20000;
 
         var animations = [
             { key: 'idle-left', start: 5, end: 5 },
@@ -70,18 +67,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             { key: 'doublejump-right', start: 23, end: 24 }
         ];
         animations.forEach(this.addAnim.bind(this));
-
-        this.staminaBarOuter = this.scene.add.image(this.scene.cameras.main.width / 2, (this.playerKey === '') ? 8 : 16, 'staminabar-outer');
-        this.staminaBarOuter.setScrollFactor(0);
-        this.staminaBarOuter.setDepth(5);
-        this.staminaBarOuter.setTint((this.playerKey === '') ? 0x736372 : 0x6a7363);
-        this.staminaBarOuter.visible = false;
-        this.staminaBarInner = this.scene.add.image(this.scene.cameras.main.width / 2 - 78, (this.playerKey === '') ? 8 : 16, 'staminabar-inner');
-        this.staminaBarInner.setScrollFactor(0);
-        this.staminaBarInner.setDepth(5);
-        this.staminaBarInner.setTint((this.playerKey === '') ? 0x736372 : 0x6a7363);
-        this.staminaBarInner.setOrigin(0, 0.5);
-        this.staminaBarInner.visible = false;
 
         // bubbles
         this.bubbles = this.scene.add.particles('particles');
@@ -232,14 +217,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        let touchTile = this.scene.layer.getTileAtWorldXY(this.body.x + 4, this.body.y + 8);
-        if (touchTile !== null && touchTile.properties.spike
-            && this.alive) {
-            this.chop();
-            this.checkIfGameOver();
-            return;
-        }
-
         this.swim(controls, time, delta);
         if (!this.canSwim) {
             this.climb(controls, time, delta);
@@ -251,50 +228,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // don't forget to animate :)
         this.anims.play(this.ani + ((this.status.isTikkie) ? 'a' : '') + this.playerKey, true);
 
-        // crash onto the floor
-        /*
-        if (this.body.onFloor()
-            && this.prevVelocityY > this.jumpPower * 2
-            && this.alive) {
-            this.kill();
-            this.checkIfGameOver();
-        }
-        */
         this.prevVelocityY = this.body.velocity.y;
 
         if (this.scene.isSplitForTwoPlayer && !this.status.ghost) {
             if (!this.status.isTikkie
                 && !Phaser.Geom.Rectangle.ContainsPoint(this.scene.cameras.main.worldView, this)) {
                 this.startGhosting();
-            }
-        }
-    }
-
-    checkIfGameOver()
-    {
-        if (!this.scene.isSplitForTwoPlayer) {
-            this.scene.gameOver();
-        } else {
-            if (this.playerKey === '') {
-                if (this.scene.other.status.ghost) {
-                    this.scene.gameOver();
-                } else {
-                    if (this.status.isTikkie) {
-                        this.scene.otherOverlapTimer = 2000;
-                        this.scene.otherPlayerOverlap();
-                    }
-                    this.startGhosting();
-                }
-            } else {
-                if (this.scene.player.status.ghost) {
-                    this.scene.gameOver();
-                } else {
-                    if (this.status.isTikkie) {
-                        this.scene.otherOverlapTimer = 2000;
-                        this.scene.otherPlayerOverlap();
-                    }
-                    this.startGhosting();
-                }
             }
         }
     }
@@ -353,38 +292,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.groundParticlesEmitter.explode(20, this.body.x + 4, this.body.bottom);
                 this.bubblesEmitter.flow(150, 1);
                 music.startMuffle();
-                /*
-                if (
-                    this.scene.inventory.indexOf('flippers') === -1
-                ) {
-                    this.status.swimTimer = this.swimTimerMax;
-                }
-                if (
-                    this.scene.inventory.indexOf('flippers') > -1
-                    && this.scene.inventory.indexOf('scuba tank') > -1
-                ) {
-                */
-                    this.status.isScubaDiving = true;
-                /*
-                }
-                */
                 this.movementParticlesEmitter.stop();
-            }
-            this.staminaBarOuter.visible = true;
-            this.staminaBarInner.visible = true;
-            this.staminaBarOuter.x = this.scene.cameras.main.width / 2;
-            this.staminaBarInner.x = this.scene.cameras.main.width / 2 - 78;
-            this.status.swimTimer = this.status.swimTimer + delta;
-
-            if (this.status.isScubaDiving) {
-                this.status.swimTimer = 0;
-                this.bubblesEmitter.frequency = 50;
-            }
-
-            this.staminaBarInner.displayWidth = Math.min(Math.ceil((this.swimTimerMax - Math.min(this.status.swimTimer, this.swimTimerMax)) / this.swimTimerMax * 156), 156);
-
-            if (this.status.swimTimer > this.swimTimerMax) {
-                gravityUp = 16;
             }
 
             let oldSpeedX = this.body.velocity.x;
@@ -400,18 +308,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     //gravityUp = 16;
                     this.body.setVelocityY(-this.jumpPower);
                 }
-            }
-
-            if (this.status.swimTimer > this.swimTimerMax + 3000) {
-                this.bubblesEmitter.stop();
-                this.choke();
-                this.checkIfGameOver();
-                return;
-            }
-
-            if (this.status.swimTimer > this.swimTimerMax) {
-                this.ani = 'swim-idle';
-                return;
             }
 
             if (controls.left) {
@@ -436,9 +332,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             if (this.status.isSwimming) {
                 this.status.isSwimming = false;
-                this.status.isScubaDiving = false;
-                this.staminaBarOuter.visible = false;
-                this.staminaBarInner.visible = false;
                 this.bubblesEmitter.stop();
                 music.stopMuffle();
             }
@@ -447,13 +340,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     climb(controls, time, delta)
     {
-        /*
-        if (!this.scene.climbLayer
-            || this.scene.inventory
-                .indexOf('climbing belt') === -1) {
-            return;
-        }
-        */
         this.canClimb = false;
 
         let climbTile = this.scene.climbLayer.getTileAtWorldXY(this.body.x + 4, this.body.y + 12);
@@ -551,10 +437,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (controls.aDown
             && (onFloor || (
                 this.body.onWall()
-                /*
-                && this.scene.inventory
-                    .indexOf('wall jump socks') > -1
-                */
             )) && (time > this.jumpTimer))
         {
             this.body.setVelocityY(-this.jumpPower);
@@ -625,10 +507,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             }
 
-            //if (this.scene.inventory
-            //        .indexOf('double jump suspenders') > -1) {
-                this.prepDoubleJump = true;
-            //}
+            this.prepDoubleJump = true;
 
         } else {
 
@@ -662,65 +541,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.justWallJumped = false;
             this.justDoubleJumped = false;
         }
-    }
-
-    choke()
-    {
-        if (!this.alive) {
-            return;
-        }
-        this.alive = false;
-        //this.visible = false;
-        //this.body.enable = false;
-        //this.scene.cameras.main.shake(250, 0.03);
-        //this.groundParticlesEmitter.setTint([0xc75745, 0xaf4433, 0xd95641, 0xc75745, 0xaf4433, 0xd95641, 0xdcd5c1]);
-        //this.groundParticlesEmitter.setAlpha([1]);
-        //this.groundParticlesEmitter.explode(40, this.body.x + 4, this.body.bottom);
-        this.scene.sfx.play('glitch');
-    }
-
-    chop()
-    {
-        if (!this.alive) {
-            return;
-        }
-        this.alive = false;
-        this.visible = false;
-        this.body.enable = false;
-        this.scene.cameras.main.shake(250, 0.03);
-        //this.groundParticlesEmitter.setTint([0xc75745, 0xaf4433, 0xd95641, 0xc75745, 0xaf4433, 0xd95641, 0xdcd5c1]);
-        this.groundParticlesEmitter.setTint([(this.playerKey === '') ? 0x736372 : 0x6a7363]);
-        this.groundParticlesEmitter.setAlpha([1]);
-        this.groundParticlesEmitter.explode(40, this.body.x + 4, this.body.bottom);
-        this.scene.sfx.play('chop');
-    }
-
-    kill()
-    {
-        if (!this.alive) {
-            return;
-        }
-        this.alive = false;
-        this.visible = false;
-        this.body.enable = false;
-        this.scene.cameras.main.shake(250, 0.03);
-        this.groundParticlesEmitter.setTint([(this.playerKey === '') ? 0x736372 : 0x6a7363]);
-        this.groundParticlesEmitter.setAlpha([1]);
-        this.groundParticlesEmitter.explode(20, this.body.x + 4, this.body.bottom);
-        this.scene.sfx.play('splat');
-    }
-
-    doHomeBlockThing()
-    {
-        if (!this.alive) {
-            return;
-        }
-        this.alive = false;
-        this.visible = false;
-
-        this.bubblesEmitter.setTint([(this.playerKey === '') ? 0x736372 : 0x6a7363]);
-        this.bubblesEmitter.setDeathZone(undefined);
-        this.bubblesEmitter.flow(50, 1);
     }
 }
 

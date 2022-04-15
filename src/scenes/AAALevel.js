@@ -22,10 +22,6 @@ class Level extends Screen {
 
         this.isLevel = true;
 
-        this.inventory = ['homeblock'];
-        //this.inventory = ['homeblock', 'flippers', 'climbing belt', 'wall jump socks', 'slide grip gloves', 'scuba tank', 'rope gun'];
-        this.purse = [];
-
         this.isSplitForTwoPlayer = false;
 
         this.pauseOverlayAlpha = 0.65;
@@ -41,9 +37,6 @@ class Level extends Screen {
         this.cameras.main.setBackgroundColor('#ddffdd');
 
         super.create();
-
-        //this.mapKey = 'map';
-        //this.idleKey = 'debug';
 
         world.maps.forEach((map) => {
             let key = map.fileName.replace('../scratch/', '').replace('.tmx', '');
@@ -74,7 +67,6 @@ class Level extends Screen {
         this.map.setCollisionByProperty({collideAll: true});
 
         this.climbLayer = this.layer;
-        //this.cameras.main.setBackgroundColor(this.puzzleMap.bg);
 
         if (!this.startPoint) {
             this.startPoint = {
@@ -94,13 +86,6 @@ class Level extends Screen {
         this.player = new Player(this, this.startPoint.x, this.startPoint.y, 'player', 0, this.startPoint.facing);
         this.cameras.main.startFollow(this.player, true, this.camLerp, this.camLerp);
         this.physics.add.collider(this.player, this.layer);
-
-        /*
-        this.controls.events.on('yup', () => {
-            this.scene.launch('inventory');
-            this.scene.pause('level');
-        });
-        */
 
         this.controls.events.once('escup', () => {
             this.nextScene = 'menu';
@@ -132,14 +117,6 @@ class Level extends Screen {
         this.time.delayedCall(this.fadeTime, e => {
             this.flashMessage.showText('Press ? for help');
         }, [], this);
-
-        //console.log(this);
-        /*
-        if (this.mapKey === 'mount-hop') {
-            this.ambient.isOn = true;
-        }
-        */
-        //this.ambient.play(this.mapKey);
 
         this.dust.addOnePixelDust({ count: 20, alpha: 1, tint: this.dustColor });
 
@@ -231,12 +208,8 @@ class Level extends Screen {
             || leader.x < 0
             && leader.alive
         ) {
-            //if (this.mapKey === 'map') {
-            //    this.gameOver();
-            //} else {
-                this.gotoNextMap(leader);
-                return;
-            //}
+            this.gotoNextMap(leader);
+            return;
         }
 
         // update player
@@ -246,131 +219,7 @@ class Level extends Screen {
             this.other.update(this.bcontrols, time, delta);
             this.otherOverlapTimer = this.otherOverlapTimer + delta;
         }
-
-        // save position when idle
-        /*
-        if (this.player.body.onFloor()
-            && this.player.alive
-            && !this.controls.left
-            && !this.controls.right
-            && !this.player.isClimbing
-            && !this.player.status.isSwimming
-            && this.mapKey !== 'map'
-        ) {
-            let colTile = this.layer.getTileAtWorldXY(this.player.body.x + 4, this.player.body.y + 18);
-            if (colTile !== null && (colTile.properties.collideUp || colTile.properties.collideAll)) {
-                this.startPoint = {
-                    x: this.player.x,
-                    y: this.player.y,
-                    facing: this.player.facing
-                }
-                this.idlePoint = {...this.startPoint};
-                this.idleKey = this.mapKey;
-                localforage.setItem(
-                    'start A',
-                    {
-                        map: this.mapKey,
-                        startPoint: this.startPoint,
-                        homePoint: this.homePoint,
-                        purse: this.purse,
-                        inventory: this.inventory
-                    }
-                );
-            }
-        }
-        */
     }
-
-    /*
-    async unsetProgress()
-    {
-        this.purse = [];
-        this.inventory = ['homeblock'];
-        if (this.homePoint !== undefined) {
-            this.startPoint = {
-                x: this.homePoint.x,
-                y: this.homePoint.y,
-                facing: this.homePoint.facing
-            };
-            this.mapKey = this.homePoint.map;
-            await localforage.setItem(
-                'start A',
-                {
-                    map: this.mapKey,
-                    startPoint: this.startPoint,
-                    homePoint: this.homePoint,
-                    purse: this.purse,
-                    inventory: this.inventory
-                }
-            );
-        }
-    }
-    */
-
-    gameOver()
-    {
-        if (this.nextStart) {
-            return;
-        }
-
-        /*
-        let permadeath = this.state.permadeath;
-
-        if (this.mapKey !== this.idleKey) {
-            permadeath = false;
-        }
-
-        if (this.mapKey !== 'mount-hop' && this.mapKey !== 'sandbox') {
-            this.startPoint = {...this.idlePoint};
-            this.mapKey = this.idleKey;
-        }
-
-        if (permadeath) {
-            this.nextScene = 'mazeunload';
-            this.unsetProgress();
-        } else {
-            if (this.levelTime < 500) {
-                this.useHomeBlock();
-                return;
-            }
-            this.nextScene = 'level';
-        }
-        */
-        this.nextScene = 'level'; //tmp
-        this.startNextWait = 500;
-        this.fadeTime = 1500;
-        this.startNext();
-        this.ambient.stop();
-    }
-
-    /*
-    useHomeBlock()
-    {
-        if (this.nextStart) {
-            return;
-        }
-
-        this.player.doHomeBlockThing();
-        if (this.other) {
-            this.other.doHomeBlockThing();
-        }
-
-        this.sfx.play('homeblock');
-
-        this.startPoint = {
-            x: this.homePoint.x,
-            y: this.homePoint.y,
-            facing: this.homePoint.facing
-        };
-        this.mapKey = this.homePoint.map;
-
-        this.fadeTime = 1500;
-        this.startNextWait = 500;
-        this.nextScene = 'level';
-        this.startNext();
-        this.ambient.stop();
-    }
-    */
 
     setCollisionOnlyUp(tile)
     {
@@ -397,39 +246,6 @@ class Level extends Screen {
         if (leader.y < 0) {
             py = -2;
         }
-        /*
-        let playerWorldX = this.puzzleMap.x * 256 + Math.round(leader.x + px);
-        let playerWorldY = this.puzzleMap.y * 256 + Math.round(leader.y + py);
-        let res = this.slot.puzzle.some((map) => {
-            if (playerWorldX > map.x * 256
-                && playerWorldX < (map.x + map.w) * 256
-                && playerWorldY > (map.y) * 256
-                && playerWorldY < (map.y + map.h) * 256
-            ) {
-                //console.log('map x y', map.x, map.y);
-                this.mapKey = map.k;
-                this.startPoint = {
-                    x: playerWorldX - map.x * 256,
-                    y: playerWorldY - map.y * 256,
-                    facing: leader.facing
-                };
-                if (leader.x < 0) {
-                    this.startPoint.x = this.startPoint.x - 16;
-                }
-                if (leader.x > this.map.widthInPixels) {
-                    this.startPoint.x = this.startPoint.x + 16;
-                }
-                if (leader.y < 0) {
-                    this.startPoint.y = this.startPoint.y - 64;
-                }
-                if (leader.y > this.map.heightInPixels) {
-                    this.startPoint.y = this.startPoint.y + 16;
-                }
-                return true;
-            }
-            return false;
-        });
-        */
         let foundMap = false;
         world.maps.forEach((map) => {
             if (!foundMap
@@ -541,17 +357,11 @@ class Level extends Screen {
     onGameResume()
     {
         super.onGameResume();
-        //this.scene.stop('inventory');
-        //this.scene.stop('minimap');
-        //this.scene.stop('mazescroll');
         this.scene.resume('level');
     }
 
     onGamePause()
     {
-        //this.scene.stop('inventory');
-        //this.scene.stop('minimap');
-        //this.scene.stop('mazescroll');
         super.onGamePause();
     }
 
@@ -575,31 +385,6 @@ class Level extends Screen {
                 }
             });
         });
-    }
-    */
-
-    /*
-    gotoMountHop()
-    {
-        this.idlePoint = {...this.startPoint};
-        this.idleKey = this.mapKey;
-        localforage.setItem(
-            'start A',
-            {
-                map: this.mapKey,
-                startPoint: this.startPoint,
-                homePoint: this.homePoint,
-                purse: this.purse,
-                inventory: this.inventory
-            }
-        );
-
-        this.fadeTime = 150;
-        this.nextScene = 'level';
-        this.startPoint = undefined;
-        this.mapKey = 'mount-hop';
-        this.startNext();
-        //this.ambient.stop();
     }
     */
 
