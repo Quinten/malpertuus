@@ -4,8 +4,8 @@
   "title": "Malpertuus",
   "shortName": "Malpertuus",
   "description": "An underground fortress",
-  "bgColor": "#a6dbbb",
-  "fgColor": "#96702e",
+  "bgColor": "#333745",
+  "fgColor": "#e5c77c",
   "author": "Quinten Clause",
   "scripts": {
     "start": "webpack serve --mode development",
