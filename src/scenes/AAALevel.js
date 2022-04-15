@@ -92,6 +92,8 @@ class Level extends Screen {
             this.physics.add.collider(this.player, layer);
         });
 
+        this.setObjectPositionsFromMap();
+
         this.controls.events.once('escup', () => {
             this.nextScene = 'menu';
             this.startNextWait = 0;
@@ -119,9 +121,11 @@ class Level extends Screen {
         this.bcontrols.start();
 
         this.flashMessage = new FlashMessage(this, 0, 0);
+        /*
         this.time.delayedCall(this.fadeTime, e => {
             this.flashMessage.showText('Press ? for help');
         }, [], this);
+        */
 
         this.swimCels = [];
         /*
@@ -390,28 +394,36 @@ class Level extends Screen {
         super.onGamePause();
     }
 
-    /*
     setObjectPositionsFromMap()
     {
         if (!this.map) {
             return;
         }
-        this.runePoints = [];
-        let layer = this.map.getLayer(3);
-        layer.data.forEach((row) => {
-            row.forEach((tile) => {
-                if (tile.index > -1) {
-                    if (tile.properties.player && !this.startPoint) {
-                        this.startPoint = {x: tile.pixelX, y: tile.pixelY, facing: tile.properties.facing};
+        this.map.layers.forEach(layer => {
+            layer.data.forEach((row) => {
+                row.forEach((tile) => {
+                    if (tile.index > -1) {
+                        /*
+                        if (tile.properties.player && !this.startPoint) {
+                            this.startPoint = {x: tile.pixelX, y: tile.pixelY, facing: tile.properties.facing};
+                        }
+                        */
+                        if (tile.properties.bottle) {
+                            let bottle = this.physics.add.sprite(tile.pixelX + 3, tile.pixelY, 'bottle');
+                            bottle.body.allowGravity = false;
+                            bottle.setDepth(3);
+                            this.physics.add.overlap(bottle, this.player, (b, p) => {
+                                b.visible = false;
+                                b.body.enable = false;
+                                this.flashMessage.showText('Found 1 empty bottle');
+                                this.sfx.play('coin');
+                            });
+                        }
                     }
-                    if (tile.properties.rune) {
-                        this.runePoints.push({x: tile.pixelX + 4, y: tile.pixelY + 8});
-                    }
-                }
+                });
             });
         });
     }
-    */
 
     completeGame()
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.4" name="tiles" tilewidth="8" tileheight="8" tilecount="40" columns="8">
- <image source="../src/assets/images/tiles.png" width="64" height="40"/>
+<tileset version="1.8" tiledversion="1.8.4" name="tiles" tilewidth="8" tileheight="8" tilecount="64" columns="8">
+ <image source="../src/assets/images/tiles.png" width="64" height="64"/>
  <tile id="2">
   <properties>
    <property name="collideAll" type="bool" value="true"/>
@@ -25,6 +25,11 @@
   <properties>
    <property name="climbable" type="bool" value="true"/>
    <property name="collideUp" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="7">
+  <properties>
+   <property name="bottle" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="8">
@@ -160,6 +165,21 @@
  <tile id="35">
   <properties>
    <property name="climbable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="40">
+  <properties>
+   <property name="collideUp" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="41">
+  <properties>
+   <property name="collideUp" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="42">
+  <properties>
+   <property name="collideUp" type="bool" value="true"/>
   </properties>
  </tile>
  <wangsets>

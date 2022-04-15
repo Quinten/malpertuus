@@ -28,10 +28,12 @@ class FleshMessage extends Phaser.GameObjects.Container {
     }
 
     showText(textToShow) {
+        /*
         if (shownMessages.indexOf(textToShow) > -1) {
             return;
         }
         shownMessages.push(textToShow);
+        */
         this.textToShow = textToShow;
         this.text.text = textToShow;
         this.text.setTint(window.bgColor.color);
