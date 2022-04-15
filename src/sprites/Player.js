@@ -1,4 +1,3 @@
-import Parachute from '../sprites/Parachute.js';
 import music from '../utils/music.js';
 
 let status = {};
@@ -17,7 +16,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 isSwimming: false,
                 isScubaDiving: false,
                 swimTimer: 0,
-                parachuting: false,
                 ghost: false
             };
         }
@@ -69,11 +67,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             { key: 'walljump-left', start: 21, end: 21 },
             { key: 'walljump-right', start: 22, end: 22 },
             { key: 'doublejump-left', start: 25, end: 26 },
-            { key: 'doublejump-right', start: 23, end: 24 },
-            { key: 'parachute-left', start: 28, end: 28 },
-            { key: 'parachute-right', start: 27, end: 27 },
-            { key: 'ropeswing-left', start: 30, end: 30 },
-            { key: 'ropeswing-right', start: 29, end: 29 }
+            { key: 'doublejump-right', start: 23, end: 24 }
         ];
         animations.forEach(this.addAnim.bind(this));
 
@@ -147,27 +141,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             rotate: [0, 90, 180, 270]
         });
 
-        this.parachute = new Parachute(this.scene, 0, 0);
-        this.parachute.visible = this.status.parachuting;
-        let controls = (this.playerKey === '') ? this.scene.controls : this.scene.bcontrols;
-        /*
-        controls.events.on('xup', () => {
-            if (this.scene.inventory.indexOf('parachute') > -1
-                && !this.body.onFloor()
-                && !this.status.isSwimming
-                && !this.isClimbing
-                && !this.status.parachuting
-            ) {
-                this.parachute.visible = true;
-                this.status.parachuting = true;
-                this.scene.sfx.play('pop');
-            } else if (this.status.parachuting) {
-                this.parachute.visible = false;
-                this.status.parachuting = false;
-            }
-        });
-        */
-
         this.scene.inners.push(this);
 
         this.ghost = this.scene.physics.add.sprite(x, y, 'player', 20);
@@ -208,8 +181,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(controls, time, delta)
     {
-        this.parachute.update(time, delta, this);
-
         if (this.bubblesEmitter.active) {
             this.bubblesEmitter.setPosition(this.x - 4 + Math.floor(Math.random() * 9), this.y);
         }
@@ -675,8 +646,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.ani = 'walljump-';
                 } else if (this.justDoubleJumped) {
                     this.ani = 'doublejump-';
-                } else if (this.status.parachuting) {
-                    this.ani = 'parachute-';
                 } else {
                     this.ani = 'jump-';
                 }

@@ -23,7 +23,7 @@ class Level extends Screen {
         this.isLevel = true;
 
         this.inventory = ['homeblock'];
-        //this.inventory = ['homeblock', 'flippers', 'climbing belt', 'wall jump socks', 'slide grip gloves', 'scuba tank', 'parachute', 'rope gun'];
+        //this.inventory = ['homeblock', 'flippers', 'climbing belt', 'wall jump socks', 'slide grip gloves', 'scuba tank', 'rope gun'];
         this.purse = [];
 
         this.isSplitForTwoPlayer = false;
