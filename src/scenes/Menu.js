@@ -1,4 +1,5 @@
 import Screen from './Screen';
+import packageConfig from '../../package';
 
 class Menu extends Screen {
 
@@ -7,7 +8,7 @@ class Menu extends Screen {
         super((config) ? config : { key: 'menu' });
         this.menu = [
             {
-                text: 'enter malpertuus',
+                text: 'play ' + packageConfig.title,
                 action: 'level'
             },
             {
@@ -45,7 +46,7 @@ class Menu extends Screen {
         this.menuText = this.add.dynamicBitmapText(this.scale.width / 2 - 48, this.scale.height / 2, 'napie-eight-font', this.getMenuText());
         this.menuText.setTint(window.fgColor.color);
 
-        this.ambient.play();
+        this.ambient.play(packageConfig.title);
 
         this.resizeField(this.scale.width, this.scale.height);
     }

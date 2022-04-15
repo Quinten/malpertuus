@@ -24,20 +24,20 @@ let sheets = [
     },
     {
         melody: [
-            '4D4','2E4','6F4', '4g4', '2e4', '10A5', '2B5', '6D4', '2E4', '6F4', '2g4', '10A5', '8-',
-            '4B5','2D4','6E4', '4g4', '2F4', '10A5', '2B5', '6D4', '2E4', '6g4', '2F4', '10A5', '8-',
-        ],
-        bass: [
-            '4E3', '4F3', '8g3', '4B4', '4A4', '8A4', '4D3', '4E3', '8F3', '4g3', '4B4', '4A4', '4D3'
-        ]
-    },
-    {
-        melody: [
             '4E4','2C4','6B4', '4G4', '2E4', '10C5', '2B5', '6G4', '2B4', '6G4', '2E4', '10C5', '8-',
             '4E5','2C4','6B4', '4G4', '2E4', '10C5', '2B5', '6G4', '2E4', '6C4', '2B4', '10G5', '8-',
         ],
         bass: [
             '4E3', '4C3', '8B3', '4G4', '4E4', '8C4', '4B3', '4G3', '8E3', '4C3', '4B4', '4G4', '4G3'
+        ]
+    },
+    {
+        melody: [
+            '4D4','2E4','6F4', '4g4', '2e4', '10A5', '2B5', '6D4', '2E4', '6F4', '2g4', '10A5', '8-',
+            '4B5','2D4','6E4', '4g4', '2F4', '10A5', '2B5', '6D4', '2E4', '6g4', '2F4', '10A5', '8-',
+        ],
+        bass: [
+            '4E3', '4F3', '8g3', '4B4', '4A4', '8A4', '4D3', '4E3', '8F3', '4g3', '4B4', '4A4', '4D3'
         ]
     },
     {
@@ -58,10 +58,12 @@ class Ambient extends Phaser.Plugins.BasePlugin
         super(pluginManager);
         this.ctx = undefined;
         this.seed = null;
+        this.triedSeed = null;
     }
 
     play(seed)
     {
+        this.triedSeed = seed;
         if (!isOn || this.seed === seed) {
             return;
         }
@@ -105,7 +107,7 @@ class Ambient extends Phaser.Plugins.BasePlugin
         isOn = value;
         localStorage.setItem(musicKey, (value) ? 'on' : 'off');
         if (value) {
-            this.play();
+            this.play(this.triedSeed || 'Born in the maze');
         } else {
             this.stop();
         }
