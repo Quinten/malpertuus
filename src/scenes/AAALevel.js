@@ -29,6 +29,8 @@ class Level extends Screen {
         this.mapKey = 'map';
 
         this.camLerp = 1;
+
+        this.bottlesNeeded = 15000;
     }
 
     create()
@@ -121,11 +123,9 @@ class Level extends Screen {
         this.bcontrols.start();
 
         this.flashMessage = new FlashMessage(this, 0, 0);
-        /*
         this.time.delayedCall(this.fadeTime, e => {
             this.flashMessage.showText('Press ? for help');
         }, [], this);
-        */
 
         this.swimCels = [];
         /*
@@ -415,7 +415,8 @@ class Level extends Screen {
                             this.physics.add.overlap(bottle, this.player, (b, p) => {
                                 b.visible = false;
                                 b.body.enable = false;
-                                this.flashMessage.showText('Found 1 empty bottle');
+                                this.bottlesNeeded = this.bottlesNeeded - 1;
+                                this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
                                 this.sfx.play('coin');
                             });
                         }

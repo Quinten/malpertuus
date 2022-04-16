@@ -28,12 +28,10 @@ class FleshMessage extends Phaser.GameObjects.Container {
     }
 
     showText(textToShow) {
-        /*
         if (shownMessages.indexOf(textToShow) > -1) {
             return;
         }
         shownMessages.push(textToShow);
-        */
         this.textToShow = textToShow;
         this.text.text = textToShow;
         this.text.setTint(window.bgColor.color);
@@ -45,16 +43,17 @@ class FleshMessage extends Phaser.GameObjects.Container {
         this.graphics.fillRect(this.text.y - 4, this.text.y - 4, this.text.width + 8, this.text.height + 6);
         //this.graphics.fillRect(0, 0, 1, 8); // stick
         this.graphics.visible = true;
-        this.y = -64;
-        this.scene.tweens.add({
-            targets: this,
-            y: 0,
-            duration: 500,
-            ease: 'Back.easeOut',
-            yoyo: true,
-            repeat: 0,
-            hold: 6000
-        });
+        if (Math.round(this.y) == -64) {
+            this.scene.tweens.add({
+                targets: this,
+                y: 0,
+                duration: 500,
+                ease: 'Back.easeOut',
+                yoyo: true,
+                repeat: 0,
+                hold: 6000
+            });
+        }
     }
 }
 
