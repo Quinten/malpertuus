@@ -8,6 +8,18 @@ world.maps.forEach((map) => {
     map.key = key;
 });
 
+let shuffleArray = (arr) => {
+    let newArr = [];
+    let oldArr = [...arr];
+    while (oldArr.length) {
+        newArr.push(oldArr.splice(
+            Math.floor(Math.random() * oldArr.length),
+            1
+        )[0]);
+    }
+    return newArr;
+};
+
 class Level extends Screen {
 
     constructor (config)
@@ -31,6 +43,7 @@ class Level extends Screen {
         this.camLerp = 1;
 
         this.bottlesNeeded = 15000;
+        this.bottlesFound = 0;
     }
 
     create()
@@ -399,6 +412,7 @@ class Level extends Screen {
         if (!this.map) {
             return;
         }
+        let bottlePositions = [];
         this.map.layers.forEach(layer => {
             layer.data.forEach((row) => {
                 row.forEach((tile) => {
@@ -409,21 +423,37 @@ class Level extends Screen {
                         }
                         */
                         if (tile.properties.bottle) {
-                            let bottle = this.physics.add.sprite(tile.pixelX + 3, tile.pixelY, 'bottle');
-                            bottle.body.allowGravity = false;
-                            bottle.setDepth(3);
-                            this.physics.add.overlap(bottle, this.player, (b, p) => {
-                                b.visible = false;
-                                b.body.enable = false;
-                                this.bottlesNeeded = this.bottlesNeeded - 1;
-                                this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
-                                this.sfx.play('coin');
-                            });
+                            bottlePositions.push({x: tile.pixelX + 3, y: tile.pixelY});
                         }
                     }
                 });
             });
         });
+
+        bottlePositions = shuffleArray(bottlePositions);
+
+        bottlePositions.forEach((tile, index) => {
+            if (index > 15000 - this.bottlesNeeded) {
+                return;
+            }
+            let bottle = this.physics.add.sprite(tile.x, tile.y, 'bottle');
+            bottle.body.allowGravity = false;
+            bottle.setDepth(3);
+            this.physics.add.overlap(bottle, this.player, (b, p) => {
+                b.visible = false;
+                b.body.enable = false;
+                this.bottlesNeeded = this.bottlesNeeded - 1;
+                this.bottlesFound = this.bottlesFound + 1;
+                if (this.flashMessage.isShowing) {
+                    this.flashMessage.showText('Found ' + this.bottlesFound + ' empty bottles.\n' + this.bottlesNeeded + ' to go...')
+                } else {
+                    this.bottlesFound = 1;
+                    this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
+                }
+                this.sfx.play('coin');
+            });
+        });
+
     }
 
     completeGame()

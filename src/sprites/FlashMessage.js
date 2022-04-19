@@ -19,12 +19,14 @@ class FleshMessage extends Phaser.GameObjects.Container {
 
         this.textToShow = undefined;
         this.showTimer = 3000;
+        this.isShowing = false;
+        this.reCall = undefined;
+        this.reTween = undefined;
 
         scene.sys.displayList.add(this);
         this.setDepth(7);
 
         this.setScrollFactor(0, 0);
-
     }
 
     showText(textToShow) {
@@ -43,17 +45,40 @@ class FleshMessage extends Phaser.GameObjects.Container {
         this.graphics.fillRect(this.text.y - 4, this.text.y - 4, this.text.width + 8, this.text.height + 6);
         //this.graphics.fillRect(0, 0, 1, 8); // stick
         this.graphics.visible = true;
-        if (Math.round(this.y) == -64) {
+        if (!this.isShowing) {
+            this.y = -64;
             this.scene.tweens.add({
                 targets: this,
                 y: 0,
                 duration: 500,
                 ease: 'Back.easeOut',
-                yoyo: true,
-                repeat: 0,
-                hold: 6000
+                yoyo: false,
+                repeat: 0
             });
+            this.isShowing = true;
         }
+        if (this.reCall) {
+            this.reCall.remove();
+        }
+        if (this.reTween) {
+            this.reTween.stop();
+        }
+        this.reCall = this.scene.time.delayedCall(6000, () => {
+            this.y = 0;
+            this.reTween = this.scene.tweens.add({
+                targets: this,
+                y: -64,
+                duration: 500,
+                ease: 'Back.easeIn',
+                yoyo: false,
+                repeat: 0,
+                onComplete: () => {
+                    this.isShowing = false;
+                    this.reTween = undefined;
+                    this.reCall = undefined;
+                }
+            });
+        }, [], this);
     }
 }
 
