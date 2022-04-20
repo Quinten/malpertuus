@@ -29,17 +29,10 @@
             "y": 0
         },
         {
-            "fileName": "../scratch/southwest.tmx",
-            "height": 1024,
-            "width": 1024,
-            "x": -1024,
-            "y": 1024
-        },
-        {
             "fileName": "../scratch/southwestwest.tmx",
             "height": 1024,
             "width": 1024,
-            "x": -2048,
+            "x": -1024,
             "y": 1024
         }
     ],
