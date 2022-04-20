@@ -48,8 +48,6 @@ class Level extends Screen {
 
     create()
     {
-        this.cameras.main.setBackgroundColor('#ddffdd');
-
         super.create();
 
         world.maps.forEach((map) => {
