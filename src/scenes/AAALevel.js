@@ -123,6 +123,8 @@ class Level extends Screen {
             this.sfx.play('click');
         }, this);
 
+        // disable it for the jam
+        /*
         this.other = undefined;
         if (!this.isSplitForTwoPlayer) {
             this.controls.events.once('secup', () => {
@@ -132,6 +134,7 @@ class Level extends Screen {
             this.splitForTwoPlayer();
         }
         this.bcontrols.start();
+        */
 
         this.flashMessage = new FlashMessage(this, 0, 0);
         this.time.delayedCall(this.fadeTime, e => {
