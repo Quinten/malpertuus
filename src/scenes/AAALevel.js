@@ -457,6 +457,7 @@ class Level extends Screen {
                     this.bottlesNeeded = 500;
                     this.daysSurvived = this.daysSurvived + 1;
                     this.completeGame();
+                    this.flashMessage.resetMessages();
                 }
             });
         });

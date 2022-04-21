@@ -80,6 +80,11 @@ class FleshMessage extends Phaser.GameObjects.Container {
             });
         }, [], this);
     }
+
+    resetMessages()
+    {
+        shownMessages = [shownMessages[0]];
+    }
 }
 
 export default FleshMessage;

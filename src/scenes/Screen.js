@@ -98,6 +98,7 @@ class Screen extends Phaser.Scene {
         }
         this.nextStart = true;
         this.cameras.main.once('camerafadeoutcomplete', (camera) => {
+            this.scene.manager.keys[this.nextScene].controls.resetBools();
             this.scene.start(this.nextScene);
         }, this);
         this.time.delayedCall(this.startNextWait, () => {

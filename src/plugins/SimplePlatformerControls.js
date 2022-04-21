@@ -172,6 +172,24 @@ class SimplePlatformerControls extends Phaser.Plugins.ScenePlugin {
         this.scene.events.off('preupdate', this.preUpdate);
         this.scene.events.off('shutdown', this.shutdown);
     }
+
+    resetBools()
+    {
+        this.up = false;
+        this.right = false;
+        this.down = false;
+        this.left = false;
+        this.aDown = false;
+        this.bDown = false;
+        this.xDown = false;
+        this.yDown = false;
+        this.cursors = {
+            up: false,
+            left: false,
+            right: false,
+            down: false
+        };
+    }
 }
 
 export default SimplePlatformerControls;
