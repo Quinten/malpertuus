@@ -44,6 +44,7 @@ class Level extends Screen {
 
         this.bottlesNeeded = 500;
         this.bottlesFound = 0;
+        this.daysSurvived = 0;
     }
 
     create()
@@ -434,7 +435,7 @@ class Level extends Screen {
         bottlePositions = shuffleArray(bottlePositions);
 
         bottlePositions.forEach((tile, index) => {
-            if (index > 500 - this.bottlesNeeded) {
+            if (index > (500 + 25 * this.daysSurvived) - this.bottlesNeeded) {
                 return;
             }
             let bottle = this.physics.add.sprite(tile.x, tile.y, 'bottle');
@@ -452,16 +453,22 @@ class Level extends Screen {
                     this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
                 }
                 this.sfx.play('coin');
+                if (this.bottlesNeeded <= 0) {
+                    this.bottlesNeeded = 500;
+                    this.daysSurvived = this.daysSurvived + 1;
+                    this.completeGame();
+                }
             });
         });
     }
 
     completeGame()
     {
-        this.fadeTime = 150;
+        this.fadeTime = 0;
+        this.startNextWait = 0;
         this.nextScene = 'endscreen';
         this.startNext();
-        this.ambient.stop();
+        //this.ambient.stop();
     }
 }
 

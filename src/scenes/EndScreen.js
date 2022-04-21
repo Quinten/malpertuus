@@ -5,11 +5,21 @@ class EndScreen extends Screen {
     constructor (config)
     {
         super((config) ? config : { key: 'endscreen' });
-        this.centerText = 'There is no end to malpertuus.';
         this.autoFade = true;
-        this.nextScene = 'menu';
+        this.nextScene = 'level';
         this.fadeTime = 2000;
         this.autoFadeWait = 2000;
+    }
+
+    create()
+    {
+        let nDays = this.scene.manager.keys.level.daysSurvived;
+        if (nDays === 1) {
+            this.centerText = 'You survived 1 day\n.';
+        } else {
+            this.centerText = 'You survived ' + nDays + ' days.';
+        }
+        super.create();
     }
 }
 
