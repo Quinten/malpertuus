@@ -9,6 +9,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.world.enable(this);
         scene.add.existing(this);
 
+        this.isNew = true;
+
         this.playerKey = playerKey;
         if (status['status' + playerKey] === undefined) {
             status['status' + playerKey] = {
@@ -248,6 +250,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.startGhosting();
             }
         }
+
+        this.isNew = false;
     }
 
     startGhosting() {
@@ -312,6 +316,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.bubblesEmitter.flow(150, 1);
                 music.startMuffle();
                 this.movementParticlesEmitter.stop();
+            }
+            if (this.isNew) {
+                this.bubblesEmitter.flow(150, 1);
             }
 
             let oldSpeedX = this.body.velocity.x;
