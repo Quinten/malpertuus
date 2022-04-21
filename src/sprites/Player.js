@@ -23,7 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setSize(8, 16, true);
         this.setOffset(12, 14, true);
         this.setCollideWorldBounds(false);
-        //this.setTintFill(0xffffff);
+        this.setTintFill(0xffffff);
         this.body.allowGravity = true;
 
         // tweak stuff
@@ -83,6 +83,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             gravityY: 0,
             frequency: -1,
             rotate: { min: 0, max: 0 },
+            tint: 0x000000,
             deathZone: {
                 type: 'onLeave',
                 source: {
@@ -222,7 +223,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.swim(controls, time, delta);
+        this.setTintFill(0x000000);
         if (!this.canSwim) {
+            this.setTintFill(0xffffff);
             this.climb(controls, time, delta);
             if (!this.isClimbing) {
                 this.runAndJump(controls, time, delta);
