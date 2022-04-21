@@ -42,7 +42,7 @@ class Level extends Screen {
 
         this.camLerp = 1;
 
-        this.bottlesNeeded = 15000;
+        this.bottlesNeeded = 500;
         this.bottlesFound = 0;
     }
 
@@ -434,7 +434,7 @@ class Level extends Screen {
         bottlePositions = shuffleArray(bottlePositions);
 
         bottlePositions.forEach((tile, index) => {
-            if (index > 15000 - this.bottlesNeeded) {
+            if (index > 500 - this.bottlesNeeded) {
                 return;
             }
             let bottle = this.physics.add.sprite(tile.x, tile.y, 'bottle');
@@ -454,7 +454,6 @@ class Level extends Screen {
                 this.sfx.play('coin');
             });
         });
-
     }
 
     completeGame()
