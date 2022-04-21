@@ -4,10 +4,10 @@ import seedrandom from 'seedrandom';
 
 const musicKey = 'music-' + config.name;
 
-let isOn = true;
+let isOn = false;
 let savedSetting = localStorage.getItem(musicKey);
-if (savedSetting === 'off') {
-    isOn = false;
+if (savedSetting === 'on') {
+    isOn = true;
 }
 
 let bpm = 138;

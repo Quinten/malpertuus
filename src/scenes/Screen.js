@@ -88,7 +88,7 @@ class Screen extends Phaser.Scene {
             return;
         }
         this.startNext();
-        this.sfx.play('click');
+        this.sfx.play('xylo');
     }
 
     startNext()

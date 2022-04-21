@@ -15,10 +15,12 @@ class Menu extends Screen {
                 text: t => (this.sfx.isOn) ? 'sound: on' : 'sound: off',
                 action: e => this.sfx.isOn = !this.sfx.isOn
             },
+            /*
             {
                 text: t => (this.ambient.isOn) ? 'music: on' : 'music: off',
                 action: e => this.ambient.isOn = !this.ambient.isOn
             },
+            */
             {
                 text: 'how to play',
                 action: e => {
@@ -61,7 +63,7 @@ class Menu extends Screen {
             this.menuIndex = this.menu.length - 1;
         }
         this.menuText.text = this.getMenuText();
-        this.sfx.play('uimove', 8);
+        this.sfx.play('pop', 4);
     }
 
     menuDown()
@@ -74,7 +76,7 @@ class Menu extends Screen {
             this.menuIndex = 0;
         }
         this.menuText.text = this.getMenuText();
-        this.sfx.play('uimove', 8);
+        this.sfx.play('pop', 4);
     }
 
     getMenuText()
@@ -118,7 +120,7 @@ class Menu extends Screen {
             action();
             this.menuText.text = this.getMenuText();
         }
-        this.sfx.play('click');
+        this.sfx.play('xylo');
     }
 }
 
