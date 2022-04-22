@@ -16,7 +16,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             status['status' + playerKey] = {
                 isTikkie: playerKey === 'b',
                 isSwimming: false,
-                ghost: false
+                ghost: false,
+                velocityX: 0,
+                velocityY: 0
             };
         }
         this.status = status['status' + playerKey];
@@ -149,6 +151,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.startGhosting();
         }
 
+        this.body.velocity.x = this.status.velocityX;
+        this.body.velocity.y = this.status.velocityY;
+
         //console.log(this);
 
     }
@@ -252,6 +257,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.isNew = false;
+        this.status.velocityX = this.body.velocity.x;
+        this.status.velocityY = this.body.velocity.y;
     }
 
     startGhosting() {
