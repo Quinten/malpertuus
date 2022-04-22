@@ -88,7 +88,7 @@ class Level extends Screen {
                 //x: this.map.widthInPixels / 2 - 128,
                 x: 40 * 8,
                 //y: this.map.heightInPixels / 2 - 128,
-                y: 36 * 8,
+                y: 35 * 8,
                 facing: 'left'
             };
             this.idlePoint = {...this.startPoint};

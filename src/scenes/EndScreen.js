@@ -15,9 +15,9 @@ class EndScreen extends Screen {
     {
         let nDays = this.scene.manager.keys.level.daysSurvived;
         if (nDays === 1) {
-            this.centerText = 'You survived 1 day\n.';
+            this.centerText = 'You survived 1 day';
         } else {
-            this.centerText = 'You survived ' + nDays + ' days.';
+            this.centerText = 'You survived ' + nDays + ' days';
         }
         super.create();
     }
