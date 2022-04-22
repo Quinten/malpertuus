@@ -5,14 +5,16 @@ class HelpScreen extends Menu {
     constructor (config)
     {
         super((config) ? config : { key: 'help' });
-        this.centerText = 'Cursors to run/move\n\nSpace/A to jump\n\n';
+        this.centerText = 'Cursors to run/move\n\nSpace/A to jump\n\nEsc/M go back\n\n';
         this.backText = 'Back to menu';
         this.nextScene = 'menu';
         this.menu = [
+            /*
             {
                 text: t => this.backText,
                 action: e => this.startNext()
             }
+            */
         ];
     }
 
@@ -23,7 +25,7 @@ class HelpScreen extends Menu {
         this.controls.events.once('escup', () => {
             this.startNextWait = 0;
             this.startNext();
-            this.sfx.play('click');
+            this.sfx.play('pop');
         }, this);
     }
 

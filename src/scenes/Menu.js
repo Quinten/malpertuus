@@ -120,7 +120,7 @@ class Menu extends Screen {
             action();
             this.menuText.text = this.getMenuText();
         }
-        this.sfx.play('xylo');
+        this.sfx.play('pop');
     }
 }
 

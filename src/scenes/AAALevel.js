@@ -112,7 +112,7 @@ class Level extends Screen {
             this.nextScene = 'menu';
             this.startNextWait = 0;
             this.startNext();
-            this.sfx.play('click');
+            this.sfx.play('pop');
         }, this);
 
         this.controls.events.once('helpup', () => {
@@ -121,7 +121,7 @@ class Level extends Screen {
             this.nextScene = 'help';
             this.startNextWait = 0;
             this.startNext();
-            this.sfx.play('click');
+            this.sfx.play('pop');
         }, this);
 
         // disable it for the jam
@@ -201,7 +201,7 @@ class Level extends Screen {
             this.player.status.isTikkie = !this.player.status.isTikkie;
             this.other.status.isTikkie = !this.player.status.isTikkie;
             this.cameras.main.shake(250, 0.03);
-            this.sfx.play('click');
+            this.sfx.play('pop');
             this.otherOverlapTimer = 0;
             this.cameras.main.startFollow((this.player.status.isTikkie) ? this.player : this.other, true, this.camLerp, this.camLerp);
             this.player.setCollideWorldBounds(!this.player.status.isTikkie);
@@ -452,7 +452,7 @@ class Level extends Screen {
                     this.bottlesFound = 1;
                     this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
                 }
-                this.sfx.play('coin');
+                this.sfx.play('uimove', 8);
                 if (this.bottlesNeeded <= 0) {
                     this.bottlesNeeded = 500;
                     this.daysSurvived = this.daysSurvived + 1;
