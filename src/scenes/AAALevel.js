@@ -20,6 +20,17 @@ let shuffleArray = (arr) => {
     return newArr;
 };
 
+let wmBonus = 1;
+
+if (document.monetization) {
+    document.monetization.addEventListener(
+        'monetizationstart',
+        _ => {
+            wmBonus = 2;
+        }
+    );
+}
+
 class Level extends Screen {
 
     constructor (config)
@@ -139,7 +150,7 @@ class Level extends Screen {
 
         this.flashMessage = new FlashMessage(this, 0, 0);
         this.time.delayedCall(this.fadeTime, e => {
-            this.flashMessage.showText('Press ? for help');
+            this.flashMessage.showText((wmBonus === 2) ? 'Bonus activated!' : 'Press ? for help');
         }, [], this);
 
         this.swimCels = [];
@@ -435,7 +446,7 @@ class Level extends Screen {
         bottlePositions = shuffleArray(bottlePositions);
 
         bottlePositions.forEach((tile, index) => {
-            if (index > (500 + 25 * this.daysSurvived) - this.bottlesNeeded) {
+            if (index > (500 + 25 * this.daysSurvived * wmBonus) - this.bottlesNeeded) {
                 return;
             }
             let bottle = this.physics.add.sprite(tile.x, tile.y, 'bottle');
