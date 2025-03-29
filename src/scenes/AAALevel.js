@@ -149,9 +149,11 @@ class Level extends Screen {
         */
 
         this.flashMessage = new FlashMessage(this, 0, 0);
-        this.time.delayedCall(this.fadeTime, e => {
-            this.flashMessage.showText((wmBonus === 2) ? 'Bonus activated!' : 'Press ? for help');
-        }, [], this);
+        if (!this.mobileControlsActive) {
+            this.time.delayedCall(this.fadeTime, e => {
+                this.flashMessage.showText((wmBonus === 2) ? 'Bonus activated!' : 'Press ? for help');
+            }, [], this);
+        }
 
         this.swimCels = [];
         /*
@@ -458,10 +460,10 @@ class Level extends Screen {
                 this.bottlesNeeded = this.bottlesNeeded - 1;
                 this.bottlesFound = this.bottlesFound + 1;
                 if (this.flashMessage.isShowing) {
-                    this.flashMessage.showText('Found ' + this.bottlesFound + ' empty bottles.\n' + this.bottlesNeeded + ' to go...')
+                    this.flashMessage.showText('Found ' + this.bottlesFound + ' bottles.\n' + this.bottlesNeeded + ' to go...')
                 } else {
                     this.bottlesFound = 1;
-                    this.flashMessage.showText('Found 1 empty bottle.\n' + this.bottlesNeeded + ' to go...')
+                    this.flashMessage.showText('Found 1 bottle.\n' + this.bottlesNeeded + ' to go...')
                 }
                 this.sfx.play('uimove', 8);
                 if (this.bottlesNeeded <= 0) {

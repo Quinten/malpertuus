@@ -118,8 +118,8 @@ class Menu extends Screen {
     {
         super.resizeField(w, h);
         if (this.menuText) {
-            this.menuText.x = w / 2 - 48;
-            this.menuText.y = h / 2;
+            this.menuText.x = w / 2 - 80;
+            this.menuText.y = h / 2 - 32;
         }
     }
 
