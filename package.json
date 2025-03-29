@@ -10,7 +10,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "itch": "butler push public supernapie/malpertuus:HTML"
+    "itch": "butler push itch supernapie/malpertuus:HTML"
   },
   "repository": {
     "type": "git",
