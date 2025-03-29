@@ -1,3 +1,5 @@
+let mobileControlsInit = false;
+
 class Screen extends Phaser.Scene {
 
     constructor (config)
@@ -82,13 +84,17 @@ class Screen extends Phaser.Scene {
         }
     }
 
-    tapUp()
+    tapUp(pointer)
     {
         if (this.nextStart) {
             return;
         }
         this.startNext();
         this.sfx.play('pop', 8);
+        if (pointer.wasTouch && !mobileControlsInit) {
+            mobileControlsInit = true;
+            this.scene.launch('visualmobilecontrols');
+        }
     }
 
     startNext()
@@ -136,6 +142,11 @@ class Screen extends Phaser.Scene {
             this.pauseOverlay.destroy();
             this.pauseOverlay = undefined;
         }
+    }
+
+    get mobileControlsActive()
+    {
+        return mobileControlsInit;
     }
 }
 

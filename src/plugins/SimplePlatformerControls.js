@@ -55,9 +55,12 @@ class SimplePlatformerControls extends Phaser.Plugins.ScenePlugin {
             '14': 'left',
             '15': 'right'
         };
+        this.active = false;
     }
 
     start() {
+
+        this.active = true;
 
         this.input.gamepad.on('down', (pad, button, index) => {
             if (this.playerKey === 'b') {
@@ -171,6 +174,8 @@ class SimplePlatformerControls extends Phaser.Plugins.ScenePlugin {
         });
         this.scene.events.off('preupdate', this.preUpdate);
         this.scene.events.off('shutdown', this.shutdown);
+
+        this.active = false;
     }
 
     resetBools()

@@ -6,6 +6,10 @@ class Menu extends Screen {
     constructor (config)
     {
         super((config) ? config : { key: 'menu' });
+
+        this.menuIndex = 0;
+        this.menuText = undefined;
+
         this.menu = [
             {
                 text: 'play ' + packageConfig.title,
@@ -29,10 +33,16 @@ class Menu extends Screen {
                     this.nextScene = 'help';
                     this.startNext();
                 }
+            },
+            {
+                text: "arrange controls",
+                action: e => {
+                    this.scene.manager.keys.help.nextScene = 'menu';
+                    this.nextScene = 'arrange';
+                    this.startNext();
+                }
             }
         ];
-        this.menuIndex = 0;
-        this.menuText = undefined;
     }
 
     create ()
@@ -42,6 +52,11 @@ class Menu extends Screen {
         this.controls.events.on('aup', this.tapUp, this);
         this.controls.events.on('upup', this.menuUp, this);
         this.controls.events.on('downup', this.menuDown, this);
+
+
+        if (!this.mobileControlsActive) {
+            this.menu = this.menu.filter(item => item.text !== 'arrange controls');
+        }
 
         this.menuIndex = 0;
 

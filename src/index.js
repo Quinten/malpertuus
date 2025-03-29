@@ -68,7 +68,8 @@ let gameConfig = {
     },
     input: {
         gamepad: true,
-        queue: true
+        queue: true,
+        activePointers: 2
     },
     scene: scenes
 };
